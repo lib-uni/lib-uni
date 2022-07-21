@@ -1,0 +1,47 @@
+name: Linux
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Linux-GCC:
+    name: Linux GCC
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [g++-7, g++-10, g++-12]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: CMake
+        run: cmake -S test -B build -DCMAKE_BUILD_TYPE="Release"
+      - name: Build
+        run: cmake --build build
+      - name: Run tests
+        run: |
+          cd build
+          ctest --verbose
+
+  Linux-Clang:
+    name: Linux Clang
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [clang++-8, clang++-10, clang++-14]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: CMake
+        run: cmake -S test -B build -DCMAKE_BUILD_TYPE="Release"
+      - name: Build
+        run: cmake --build build
+      - name: Run tests
+        run: |
+          cd build
+          ctest --verbose
