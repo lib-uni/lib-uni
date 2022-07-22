@@ -38,11 +38,5 @@ static_assert(std::is_unsigned<type_char32>::value && sizeof(type_char32) >= siz
 //typedef int static_assert_char32[sizeof(type_char32) >= sizeof(short) * 2 && (type_codept)-1 > 0 ? 1 : -1];
 //typedef int static_assert_codept[sizeof(type_codept) >= sizeof(short) * 2 && (type_codept)-1 > 0 ? 1 : -1];
 }} // namespace uni::detail
-        #define UNI_ALGO_IMPL_NAMESPACE_BEGIN \
-            namespace uni { \
-            namespace detail {
-        #define UNI_ALGO_IMPL_NAMESPACE_END \
-            } \
-            }
     #endif
 #endif  // 0

@@ -103,9 +103,6 @@ static_assert(
 //static_assert(std::numeric_limits<unsigned char>::max() >= 255); // Always true
 }  // namespace uni::detail
 
-// Define namespace that low-level will use
-#define UNI_ALGO_IMPL_NAMESPACE_BEGIN namespace uni::detail {
-#define UNI_ALGO_IMPL_NAMESPACE_END }
 
 //#define UNI_ALGO_EXPERIMENTAL // Enable experimental stuff for tests
 //#define UNI_ALGO_LOG_CPP_ITER // Enable logging for UTF-8/16 iterators

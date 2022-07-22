@@ -8,15 +8,15 @@
 
 #pragma once
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
+namespace uni::detail {
 
 // This is the only function that directly access stage1 and stage2 tables.
 // Note that some data can use stage3 table then stage2 result is index in stage3.
 #ifdef __cplusplus
 template<typename T1, typename T2>
 inline type_codept stages(type_codept c, T1 stage1, T2 stage2) {
-        // If c > 0x10FFFF the behaviour is undefined
-        // For stage1/2_special_* tables if c > 0xFFFF the behaviour is undefined
+    // If c > 0x10FFFF the behaviour is undefined
+    // For stage1/2_special_* tables if c > 0xFFFF the behaviour is undefined
 
     #ifdef UNI_ALGO_TEST_ASSERT
     uaix_assert(c <= 0x10FFFF);
@@ -38,5 +38,4 @@ inline type_codept stages(type_codept c, T1 stage1, T2 stage2) {
 //#define stages(c, stage1, stage2) /*__extension__*/({ __typeof__(c) c_ = (c); (stage2[(size_t)(stage1[c_ >> 7] << 7) + (c_ & 127)]); })
 #endif
 
-UNI_ALGO_IMPL_NAMESPACE_END
-
+}

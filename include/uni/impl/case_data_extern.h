@@ -2,7 +2,7 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See LICENSE.txt */
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
+namespace uni::detail {
 
 extern const unsigned char  stage1_lower[];
 extern const type_codept    stage2_lower[];
@@ -32,4 +32,4 @@ extern const unsigned short stage3_special_fold[][4];
 extern const unsigned char  stage1_case_prop[];
 extern const unsigned char  stage2_case_prop[];
 
-UNI_ALGO_IMPL_NAMESPACE_END
+}
