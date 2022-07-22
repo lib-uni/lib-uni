@@ -3,34 +3,33 @@
  * See notice at the end of this file. */
 
 #ifndef CPP_UNI_BREAK_GRAPHEME_H_UAIX
-#define CPP_UNI_BREAK_GRAPHEME_H_UAIX
+    #define CPP_UNI_BREAK_GRAPHEME_H_UAIX
 
-#ifdef UNI_ALGO_DISABLE_BREAK_GRAPHEME
-#  error "Break Grapheme module is disabled via define UNI_ALGO_DISABLE_BREAK_GRAPHEME"
-#endif
+    #ifdef UNI_ALGO_DISABLE_BREAK_GRAPHEME
+        #error \
+            "Break Grapheme module is disabled via define UNI_ALGO_DISABLE_BREAK_GRAPHEME"
+    #endif
 
-#include <type_traits>
-#include <cassert>
+    #include <uni/config.h>
+    #include <uni/impl/break_grapheme.h>
+    #include <uni/version.h>
 
-#include <uni/config.h>
-#include <uni/version.h>
-
-#include <uni/impl/break_grapheme.h>
+    #include <cassert>
+    #include <type_traits>
 
 namespace uni::breaks::grapheme {
 
 template<class Iter, class Sent = Iter>
-class utf8
-{
-private:
+class utf8 {
+  private:
     Iter it_begin;
     Sent it_end;
     Iter it_pos;
     Iter it_next;
 
-    detail::impl_break_grapheme_state state{};
+    detail::impl_break_grapheme_state state {};
 
-public:
+  public:
     // TODO: document it a bit. Also input iterator is useless actually,
     // it can calculate the number of graphemes in a file but thats it.
 
@@ -39,32 +38,33 @@ public:
     // https://unicode.org/reports/tr29/#Random_Access
 
     using is_input_iterator =
-        std::is_same<typename std::iterator_traits<Iter>::iterator_category, std::input_iterator_tag>;
-    using iterator_category = std::conditional_t<is_input_iterator::value,
-        std::input_iterator_tag, std::forward_iterator_tag>;
-    using value_type        = void;
-    using pointer           = void;
-    using reference         = void;
-    using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        std::is_same<typename std::iterator_traits<Iter>::iterator_category,
+                     std::input_iterator_tag>;
+    using iterator_category =
+        std::conditional_t<is_input_iterator::value, std::input_iterator_tag,
+                           std::forward_iterator_tag>;
+    using value_type = void;
+    using pointer = void;
+    using reference = void;
+    using difference_type =
+        typename std::iterator_traits<Iter>::difference_type;
 
-    using is_random_access_iterator_or_lower =
-        std::is_convertible<typename std::iterator_traits<Iter>::iterator_category, std::random_access_iterator_tag>;
+    using is_random_access_iterator_or_lower = std::is_convertible<
+        typename std::iterator_traits<Iter>::iterator_category,
+        std::random_access_iterator_tag>;
 
     utf8() = default;
-    explicit utf8(Iter begin, Sent end)
-        : it_begin{begin}, it_end{end}, it_pos{begin}, it_next{begin}
-    {
+    explicit utf8(Iter begin, Sent end) :
+        it_begin {begin}, it_end {end}, it_pos {begin}, it_next {begin} {
         detail::impl_break_grapheme_state_reset(&state);
     }
-    explicit utf8(Iter end)
-        : utf8{end, end} {}
-    utf8& operator++()
-    {
-        while (it_next != it_end)
-        {
+    explicit utf8(Iter end) : utf8 {end, end} {}
+    utf8& operator++() {
+        while (it_next != it_end) {
             it_pos = it_next;
             uni::detail::type_codept codepoint = 0;
-            it_next = detail::inline_utf8_iter(it_next, it_end, &codepoint, detail::impl_iter_replacement);
+            it_next = detail::inline_utf8_iter(it_next, it_end, &codepoint,
+                                               detail::impl_iter_replacement);
             if (detail::inline_break_grapheme(&state, codepoint))
                 return *this;
         }
@@ -74,61 +74,80 @@ public:
 
         return *this;
     }
-    utf8 operator++(int)
-    {
+    utf8 operator++(int) {
         utf8 tmp = *this;
         operator++();
         return tmp;
     }
-    template<class T = difference_type> typename std::enable_if_t<is_random_access_iterator_or_lower::value, T>
-    friend operator-(const utf8& x, const utf8& y) { return x.it_pos - y.it_pos; }
-    friend bool operator==(const utf8& x, const utf8& y) { return (x.it_pos == y.it_pos); }
-    friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_pos != y.it_pos); }
-    template<class S> friend bool operator==(const utf8& x, const S&) { return (x.it_pos == x.it_end); }
-    template<class S> friend bool operator!=(const utf8& x, const S&) { return (x.it_pos != x.it_end); }
-    template<class S> friend bool operator==(const S&, const utf8& x) { return (x.it_pos == x.it_end); }
-    template<class S> friend bool operator!=(const S&, const utf8& x) { return (x.it_pos != x.it_end); }
+    template<class T = difference_type>
+    typename std::enable_if_t<is_random_access_iterator_or_lower::value,
+                              T> friend
+    operator-(const utf8& x, const utf8& y) {
+        return x.it_pos - y.it_pos;
+    }
+    friend bool operator==(const utf8& x, const utf8& y) {
+        return (x.it_pos == y.it_pos);
+    }
+    friend bool operator!=(const utf8& x, const utf8& y) {
+        return (x.it_pos != y.it_pos);
+    }
+    template<class S>
+    friend bool operator==(const utf8& x, const S&) {
+        return (x.it_pos == x.it_end);
+    }
+    template<class S>
+    friend bool operator!=(const utf8& x, const S&) {
+        return (x.it_pos != x.it_end);
+    }
+    template<class S>
+    friend bool operator==(const S&, const utf8& x) {
+        return (x.it_pos == x.it_end);
+    }
+    template<class S>
+    friend bool operator!=(const S&, const utf8& x) {
+        return (x.it_pos != x.it_end);
+    }
 };
 
 template<class Iter, class Sent = Iter>
-class utf16
-{
-private:
+class utf16 {
+  private:
     Iter it_begin;
     Sent it_end;
     Iter it_pos;
     Iter it_next;
 
-    detail::impl_break_grapheme_state state{};
+    detail::impl_break_grapheme_state state {};
 
-public:
+  public:
     using is_input_iterator =
-        std::is_same<typename std::iterator_traits<Iter>::iterator_category, std::input_iterator_tag>;
-    using iterator_category = std::conditional_t<is_input_iterator::value,
-        std::input_iterator_tag, std::forward_iterator_tag>;
-    using value_type        = void;
-    using pointer           = void;
-    using reference         = void;
-    using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+        std::is_same<typename std::iterator_traits<Iter>::iterator_category,
+                     std::input_iterator_tag>;
+    using iterator_category =
+        std::conditional_t<is_input_iterator::value, std::input_iterator_tag,
+                           std::forward_iterator_tag>;
+    using value_type = void;
+    using pointer = void;
+    using reference = void;
+    using difference_type =
+        typename std::iterator_traits<Iter>::difference_type;
 
-    using is_random_access_iterator_or_lower =
-        std::is_convertible<typename std::iterator_traits<Iter>::iterator_category, std::random_access_iterator_tag>;
+    using is_random_access_iterator_or_lower = std::is_convertible<
+        typename std::iterator_traits<Iter>::iterator_category,
+        std::random_access_iterator_tag>;
 
     utf16() = default;
-    explicit utf16(Iter begin, Sent end)
-        : it_begin{begin}, it_end{end}, it_pos{begin}, it_next{begin}
-    {
+    explicit utf16(Iter begin, Sent end) :
+        it_begin {begin}, it_end {end}, it_pos {begin}, it_next {begin} {
         detail::impl_break_grapheme_state_reset(&state);
     }
-    explicit utf16(Iter end)
-        : utf16{end, end} {}
-    utf16& operator++()
-    {
-        while (it_next != it_end)
-        {
+    explicit utf16(Iter end) : utf16 {end, end} {}
+    utf16& operator++() {
+        while (it_next != it_end) {
             it_pos = it_next;
             uni::detail::type_codept codepoint = 0;
-            it_next = detail::inline_utf16_iter(it_next, it_end, &codepoint, detail::impl_iter_replacement);
+            it_next = detail::inline_utf16_iter(it_next, it_end, &codepoint,
+                                                detail::impl_iter_replacement);
             if (detail::inline_break_grapheme(&state, codepoint))
                 return *this;
         }
@@ -138,25 +157,44 @@ public:
 
         return *this;
     }
-    utf16 operator++(int)
-    {
+    utf16 operator++(int) {
         utf16 tmp = *this;
         operator++();
         return tmp;
     }
-    template<class T = difference_type> typename std::enable_if_t<is_random_access_iterator_or_lower::value, T>
-    friend operator-(const utf16& x, const utf16& y) { return x.it_pos - y.it_pos; }
-    friend bool operator==(const utf16& x, const utf16& y) { return (x.it_pos == y.it_pos); }
-    friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_pos != y.it_pos); }
-    template<class S> friend bool operator==(const utf16& x, const S&) { return (x.it_pos == x.it_end); }
-    template<class S> friend bool operator!=(const utf16& x, const S&) { return (x.it_pos != x.it_end); }
-    template<class S> friend bool operator==(const S&, const utf16& x) { return (x.it_pos == x.it_end); }
-    template<class S> friend bool operator!=(const S&, const utf16& x) { return (x.it_pos != x.it_end); }
+    template<class T = difference_type>
+    typename std::enable_if_t<is_random_access_iterator_or_lower::value,
+                              T> friend
+    operator-(const utf16& x, const utf16& y) {
+        return x.it_pos - y.it_pos;
+    }
+    friend bool operator==(const utf16& x, const utf16& y) {
+        return (x.it_pos == y.it_pos);
+    }
+    friend bool operator!=(const utf16& x, const utf16& y) {
+        return (x.it_pos != y.it_pos);
+    }
+    template<class S>
+    friend bool operator==(const utf16& x, const S&) {
+        return (x.it_pos == x.it_end);
+    }
+    template<class S>
+    friend bool operator!=(const utf16& x, const S&) {
+        return (x.it_pos != x.it_end);
+    }
+    template<class S>
+    friend bool operator==(const S&, const utf16& x) {
+        return (x.it_pos == x.it_end);
+    }
+    template<class S>
+    friend bool operator!=(const S&, const utf16& x) {
+        return (x.it_pos != x.it_end);
+    }
 };
 
-} // namespace uni::breaks::grapheme
+}  // namespace uni::breaks::grapheme
 
-#endif // CPP_UNI_BREAK_GRAPHEME_H_UAIX
+#endif  // CPP_UNI_BREAK_GRAPHEME_H_UAIX
 
 /* Public Domain License
  *

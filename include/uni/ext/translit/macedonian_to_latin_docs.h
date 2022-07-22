@@ -3,14 +3,14 @@
  * See notice at the end of this file. */
 
 #ifndef MACEDONIAN_TO_LATIN_DOCS_H_UAIX
-#define MACEDONIAN_TO_LATIN_DOCS_H_UAIX
+    #define MACEDONIAN_TO_LATIN_DOCS_H_UAIX
 
-#include <string>
-#include <string_view>
-#include <unordered_map>
-#include <unordered_set>
+    #include <uni/iterator.h>
 
-#include <uni/iterator.h>
+    #include <string>
+    #include <string_view>
+    #include <unordered_map>
+    #include <unordered_set>
 //#include "../../cpp_uni_norm.h"
 
 // If it fails a compiler messed up the encoding of this file
@@ -21,65 +21,51 @@ namespace uni::translit {
 
 // Data and all C++ crap inside the class, the actual translit function at the end of the file
 // Use the same design for all transliterators
-class macedonian_to_latin_docs
-{
-private:
+class macedonian_to_latin_docs {
+  private:
     // https://en.wikipedia.org/wiki/Romanization_of_Macedonian
     const std::unordered_map<char32_t, char32_t> simple_map {
-    {U'а',U'a'},{U'А',U'A'},
-    {U'б',U'b'},{U'Б',U'B'},
-    {U'в',U'v'},{U'В',U'V'},
-    {U'г',U'g'},{U'Г',U'G'},
-    {U'д',U'd'},{U'Д',U'D'},
-    {U'е',U'e'},{U'Е',U'E'},
-    {U'з',U'z'},{U'З',U'Z'},
-    {U'и',U'i'},{U'И',U'I'},
-    {U'ј',U'j'},{U'Ј',U'J'},
-    {U'к',U'k'},{U'К',U'K'},
-    {U'л',U'l'},{U'Л',U'L'},
-    {U'м',U'm'},{U'М',U'M'},
-    {U'н',U'n'},{U'Н',U'N'},
-    {U'о',U'o'},{U'О',U'O'},
-    {U'п',U'p'},{U'П',U'P'},
-    {U'р',U'r'},{U'Р',U'R'},
-    {U'с',U's'},{U'С',U'S'},
-    {U'т',U't'},{U'Т',U'T'},
-    {U'у',U'u'},{U'У',U'U'},
-    {U'ф',U'f'},{U'Ф',U'F'},
-    {U'х',U'h'},{U'Х',U'H'},
-    {U'ц',U'c'},{U'Ц',U'C'}};
+        {U'а', U'a'}, {U'А', U'A'}, {U'б', U'b'}, {U'Б', U'B'}, {U'в', U'v'},
+        {U'В', U'V'}, {U'г', U'g'}, {U'Г', U'G'}, {U'д', U'd'}, {U'Д', U'D'},
+        {U'е', U'e'}, {U'Е', U'E'}, {U'з', U'z'}, {U'З', U'Z'}, {U'и', U'i'},
+        {U'И', U'I'}, {U'ј', U'j'}, {U'Ј', U'J'}, {U'к', U'k'}, {U'К', U'K'},
+        {U'л', U'l'}, {U'Л', U'L'}, {U'м', U'm'}, {U'М', U'M'}, {U'н', U'n'},
+        {U'Н', U'N'}, {U'о', U'o'}, {U'О', U'O'}, {U'п', U'p'}, {U'П', U'P'},
+        {U'р', U'r'}, {U'Р', U'R'}, {U'с', U's'}, {U'С', U'S'}, {U'т', U't'},
+        {U'Т', U'T'}, {U'у', U'u'}, {U'У', U'U'}, {U'ф', U'f'}, {U'Ф', U'F'},
+        {U'х', U'h'}, {U'Х', U'H'}, {U'ц', U'c'}, {U'Ц', U'C'}};
 
-    const std::unordered_map<char32_t, std::pair<std::u32string_view, std::u32string_view>> complex_map {
-    {U'ѓ',{U"gj",U"gj"}},{U'Ѓ',{U"GJ",U"Gj"}},
-    {U'ж',{U"zh",U"zh"}},{U'Ж',{U"ZH",U"Zh"}},
-    {U'ѕ',{U"dz",U"dz"}},{U'Ѕ',{U"DZ",U"Dz"}},
-    {U'љ',{U"lj",U"lj"}},{U'Љ',{U"LJ",U"Lj"}},
-    {U'њ',{U"nj",U"nj"}},{U'Њ',{U"NJ",U"Nj"}},
-    {U'ќ',{U"kj",U"kj"}},{U'Ќ',{U"KJ",U"Kj"}},
-    {U'ч',{U"ch",U"ch"}},{U'Ч',{U"CH",U"Ch"}},
-    {U'џ',{U"dj",U"dj"}},{U'Џ',{U"DJ",U"Dj"}},
-    {U'ш',{U"sh",U"sh"}},{U'Ш',{U"SH",U"Sh"}}};
+    const std::unordered_map<
+        char32_t, std::pair<std::u32string_view, std::u32string_view>>
+        complex_map {{U'ѓ', {U"gj", U"gj"}}, {U'Ѓ', {U"GJ", U"Gj"}},
+                     {U'ж', {U"zh", U"zh"}}, {U'Ж', {U"ZH", U"Zh"}},
+                     {U'ѕ', {U"dz", U"dz"}}, {U'Ѕ', {U"DZ", U"Dz"}},
+                     {U'љ', {U"lj", U"lj"}}, {U'Љ', {U"LJ", U"Lj"}},
+                     {U'њ', {U"nj", U"nj"}}, {U'Њ', {U"NJ", U"Nj"}},
+                     {U'ќ', {U"kj", U"kj"}}, {U'Ќ', {U"KJ", U"Kj"}},
+                     {U'ч', {U"ch", U"ch"}}, {U'Ч', {U"CH", U"Ch"}},
+                     {U'џ', {U"dj", U"dj"}}, {U'Џ', {U"DJ", U"Dj"}},
+                     {U'ш', {U"sh", U"sh"}}, {U'Ш', {U"SH", U"Sh"}}};
 
     const std::unordered_set<char32_t> lowercase_set {
-    U'а',U'б',U'в',U'г',U'д',U'ѓ',U'е',U'ж',U'з',U'ѕ',U'й',
-    U'ј',U'к',U'л',U'љ',U'м',U'н',U'њ',U'о',U'п',U'р',U'с',
-    U'т',U'ќ',U'у',U'ф',U'х',U'ц',U'ч',U'џ',U'ш'};
+        U'а', U'б', U'в', U'г', U'д', U'ѓ', U'е', U'ж', U'з', U'ѕ', U'й',
+        U'ј', U'к', U'л', U'љ', U'м', U'н', U'њ', U'о', U'п', U'р', U'с',
+        U'т', U'ќ', U'у', U'ф', U'х', U'ц', U'ч', U'џ', U'ш'};
 
     template<class Iter, class Sent, class Dest>
     void translit(Iter first, Sent last, Dest result);
 
-public:
+  public:
     macedonian_to_latin_docs() = default;
 
     template<typename UTF8>
-    std::basic_string<UTF8> utf8(std::basic_string_view<UTF8> source)
-    {
-        uni::iter::utf8 input{source.cbegin(), source.cend()};
+    std::basic_string<UTF8> utf8(std::basic_string_view<UTF8> source) {
+        uni::iter::utf8 input {source.cbegin(), source.cend()};
 
         std::basic_string<UTF8> result;
         result.reserve(source.size());
 
-        uni::iter::output::utf8 output{std::back_inserter(result)};
+        uni::iter::output::utf8 output {std::back_inserter(result)};
 
         translit(input, uni::sentinel, output);
 
@@ -87,30 +73,34 @@ public:
         return result;
     }
     template<typename UTF16>
-    std::basic_string<UTF16> utf16(std::basic_string_view<UTF16> source)
-    {
-        uni::iter::utf16 input{source.cbegin(), source.cend()};
+    std::basic_string<UTF16> utf16(std::basic_string_view<UTF16> source) {
+        uni::iter::utf16 input {source.cbegin(), source.cend()};
 
         std::basic_string<UTF16> result;
         result.reserve(source.size());
 
-        uni::iter::output::utf16 output{std::back_inserter(result)};
+        uni::iter::output::utf16 output {std::back_inserter(result)};
 
         translit(input, uni::sentinel, output);
 
         result.shrink_to_fit();
         return result;
     }
-    std::string utf8(std::string_view source) { return utf8<char>(source); }
-    std::u16string utf16(std::u16string_view source) { return utf16<char16_t>(source); }
-#if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF // 16-bit wchar_t
-    std::wstring utf16(std::wstring_view source) { return utf16<wchar_t>(source); }
-#endif
+    std::string utf8(std::string_view source) {
+        return utf8<char>(source);
+    }
+    std::u16string utf16(std::u16string_view source) {
+        return utf16<char16_t>(source);
+    }
+    #if WCHAR_MAX >= 0x7FFF && WCHAR_MAX <= 0xFFFF  // 16-bit wchar_t
+    std::wstring utf16(std::wstring_view source) {
+        return utf16<wchar_t>(source);
+    }
+    #endif
 };
 
 template<class Iter, class Sent, class Dest>
-void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result)
-{
+void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result) {
     // https://en.wikipedia.org/wiki/Romanization_of_Macedonian
 
     // Translit iterator is very powerfull it can do everything that
@@ -122,33 +112,27 @@ void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result)
     // Note the function have only one parameter - buffer, you can do whatever
     // you want with the buffer just make sure you return the proper value.
 
-    auto func = [this](std::u32string& buffer) -> std::size_t
-    {
+    auto func = [this](std::u32string& buffer) -> std::size_t {
         // Compose ѓ/Ѓ and ќ/Ќ first.
         // In Macedonian there are only 4 cases when letters can be decomposed
         // we can handle it like this so we don't need to use NFC iterator
         // it will be faster, even though it won't work in some corner cases
         // but it doesn't matter much for the transliteration.
-        if (buffer.size() > 1)
-        {
-            if (buffer[0] == U'г' && buffer[1] == 0x301)
-            {
+        if (buffer.size() > 1) {
+            if (buffer[0] == U'г' && buffer[1] == 0x301) {
                 buffer.replace(0, 2, 1, U'ѓ');
                 return 0;
                 // Read example below why we return 0 here
             }
-            if (buffer[0] == U'Г' && buffer[1] == 0x301)
-            {
+            if (buffer[0] == U'Г' && buffer[1] == 0x301) {
                 buffer.replace(0, 2, 1, U'Ѓ');
                 return 0;
             }
-            if (buffer[0] == U'к' && buffer[1] == 0x301)
-            {
+            if (buffer[0] == U'к' && buffer[1] == 0x301) {
                 buffer.replace(0, 2, 1, U'ќ');
                 return 0;
             }
-            if (buffer[0] == U'К' && buffer[1] == 0x301)
-            {
+            if (buffer[0] == U'К' && buffer[1] == 0x301) {
                 buffer.replace(0, 2, 1, U'Ќ');
                 return 0;
             }
@@ -166,18 +150,15 @@ void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result)
         //	// because returning 0 also means to stay at the same position.
         //}
         auto simple = simple_map.find(buffer[0]);
-        if (simple != simple_map.cend())
-        {
+        if (simple != simple_map.cend()) {
             buffer[0] = simple->second;
             return 1;
             // We changed only 1 code point
             // so just proceed by one code point.
         }
         auto complex = complex_map.find(buffer[0]);
-        if (complex != complex_map.cend())
-        {
-            if (buffer.size() > 1 && lowercase_set.count(buffer[1]))
-            {
+        if (complex != complex_map.cend()) {
+            if (buffer.size() > 1 && lowercase_set.count(buffer[1])) {
                 buffer.replace(0, 1, complex->second.second);
                 return complex->second.second.size();
                 // We changed multiple code points
@@ -185,9 +166,7 @@ void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result)
                 // It is fine to skip less code points than you changed
                 // if you need it for some complicated rules but be aware
                 // if the rules interfere with each other it can cause an endless loop.
-            }
-            else
-            {
+            } else {
                 buffer.replace(0, 1, complex->second.first);
                 return complex->second.first.size();
             }
@@ -230,9 +209,9 @@ void macedonian_to_latin_docs::translit(Iter first, Sent last, Dest result)
         *result++ = *it;
 }
 
-} // namespace uni::translit
+}  // namespace uni::translit
 
-#endif // MACEDONIAN_TO_LATIN_DOCS_H_UAIX
+#endif  // MACEDONIAN_TO_LATIN_DOCS_H_UAIX
 
 /* Public Domain License
  *

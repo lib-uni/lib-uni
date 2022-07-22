@@ -13,11 +13,12 @@ namespace library {
     inline constexpr int patch = (UNI_ALGO_CPP_LIB_VERSION % 1000);
     inline constexpr int minor = (UNI_ALGO_CPP_LIB_VERSION / 1000 % 1000);
     inline constexpr int major = (UNI_ALGO_CPP_LIB_VERSION / 1000000);
-}
+}  // namespace library
 namespace unicode {
     inline constexpr int update = (UNI_ALGO_UNICODE_VERSION % 1000);
     inline constexpr int minor = (UNI_ALGO_UNICODE_VERSION / 1000 % 1000);
     inline constexpr int major = (UNI_ALGO_UNICODE_VERSION / 1000000);
-}}
+}  // namespace unicode
+}  // namespace uni::version
 
-#endif // CPP_UNI_VERSION_H_UAIX
+#endif  // CPP_UNI_VERSION_H_UAIX

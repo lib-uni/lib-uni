@@ -30,7 +30,6 @@ inline constexpr size_t impl_x_utf8_casemap = 3;
 inline constexpr size_t impl_x_utf16_casemap = 1;
 #endif
 
-
 // Modes for casemap functions
 namespace casemap_mode {
     enum {

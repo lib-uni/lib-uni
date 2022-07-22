@@ -38,4 +38,4 @@ inline type_codept stages(type_codept c, T1 stage1, T2 stage2) {
 //#define stages(c, stage1, stage2) /*__extension__*/({ __typeof__(c) c_ = (c); (stage2[(size_t)(stage1[c_ >> 7] << 7) + (c_ & 127)]); })
 #endif
 
-}
+}  // namespace uni::detail
