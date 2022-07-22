@@ -17,7 +17,6 @@
     #define uaix_unlikely(x) (!!(x))
 #endif
 
-
 // FIX: delete below
 #ifdef __cplusplus
     #if defined(__GNUC__) || defined(__clang__)

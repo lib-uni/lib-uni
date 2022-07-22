@@ -30,20 +30,28 @@ inline constexpr size_t impl_x_utf8_casemap = 3;
 inline constexpr size_t impl_x_utf16_casemap = 1;
 #endif
 
-// Modes for casemap functions
-//inline constexpr int impl_casemap_mode_null = 0;
-inline constexpr int impl_casemap_mode_fold = 1;
-inline constexpr int impl_casemap_mode_upper = 2;
-inline constexpr int impl_casemap_mode_lower = 3;
-inline constexpr int impl_casemap_mode_title = 4;
 
-inline constexpr type_codept prop_Cased = 1 << 0;
-inline constexpr type_codept prop_Cased_Ignorable = 1 << 1;
-inline constexpr type_codept prop_Lowercase = 1 << 2;  // not used
-inline constexpr type_codept prop_Uppercase = 1 << 3;  // not used
-inline constexpr type_codept prop_Soft_Dotted = 1 << 4;  // impl_case_locale.h
-inline constexpr type_codept prop_CCC_NOT_0 = 1 << 5;  // impl_case_locale.h
-inline constexpr type_codept prop_CCC_230 = 1 << 6;  // impl_case_locale.h
+// Modes for casemap functions
+namespace casemap_mode {
+    enum {
+        fold = 1,
+        upper,
+        lower,
+        title,
+    };
+}
+
+namespace prop {
+    enum : type_codept {
+        cased = 1 << 0,
+        cased_ignorable = 1 << 1,
+        lowercase = 1 << 2,  // not used
+        uppercase = 1 << 3,  // not used
+        soft_dotted = 1 << 4,  // impl_case_locale.h
+        ccc_not_0 = 1 << 5,  // impl_case_locale.h
+        ccc_230 = 1 << 6,  // impl_case_locale.h
+    };
+}  // namespace prop
 
 inline type_codept stages_lower(type_codept c) {
     type_codept v = stages(c, stage1_lower, stage2_lower);
@@ -179,9 +187,9 @@ bool utf8_final_sigma(it_in_utf8 from, it_end_utf8 to, bool reverse) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (prop & prop_Cased_Ignorable)
+        if (prop & prop::cased_ignorable)
             continue;
-        return (prop & prop_Cased) ? true : false;
+        return (prop & prop::cased) ? true : false;
     }
 
     return false;
@@ -202,9 +210,9 @@ bool utf16_final_sigma(it_in_utf16 from, it_end_utf16 to, bool reverse) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (prop & prop_Cased_Ignorable)
+        if (prop & prop::cased_ignorable)
             continue;
-        return (prop & prop_Cased) ? true : false;
+        return (prop & prop::cased) ? true : false;
     }
 
     return false;
@@ -240,7 +248,7 @@ size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
     it_out_utf8 dst = result;
     type_codept c = 0;
 
-    if (mode == impl_casemap_mode_lower) {
+    if (mode == casemap_mode::lower) {
         while (src != last) {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             it_in_utf8 prev = src;
@@ -269,7 +277,7 @@ size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
 
             dst = codepoint_to_utf8(c, dst);
         }
-    } else if (mode == impl_casemap_mode_upper) {
+    } else if (mode == casemap_mode::upper) {
         while (src != last) {
             src = utf8_iter(src, last, &c, iter_replacement);
 
@@ -289,7 +297,7 @@ size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
 
             dst = codepoint_to_utf8(c, dst);
         }
-    } else if (mode == impl_casemap_mode_fold) {
+    } else if (mode == casemap_mode::fold) {
         while (src != last) {
             src = utf8_iter(src, last, &c, iter_replacement);
 
@@ -311,7 +319,7 @@ size_t impl_utf8_casemap(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
         }
     }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-    else if (mode == impl_casemap_mode_title)
+    else if (mode == casemap_mode::title)
         return utf8_title(first, last, result);
 #endif
 
@@ -330,7 +338,7 @@ size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last,
     it_out_utf16 dst = result;
     type_codept c = 0;
 
-    if (mode == impl_casemap_mode_lower) {
+    if (mode == casemap_mode::lower) {
         while (src != last) {
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
             it_in_utf16 prev = src;
@@ -357,7 +365,7 @@ size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last,
 
             dst = codepoint_to_utf16(c, dst);
         }
-    } else if (mode == impl_casemap_mode_upper) {
+    } else if (mode == casemap_mode::upper) {
         while (src != last) {
             src = utf16_iter(src, last, &c, iter_replacement);
 
@@ -377,7 +385,7 @@ size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last,
 
             dst = codepoint_to_utf16(c, dst);
         }
-    } else if (mode == impl_casemap_mode_fold) {
+    } else if (mode == casemap_mode::fold) {
         while (src != last) {
             src = utf16_iter(src, last, &c, iter_replacement);
 
@@ -399,7 +407,7 @@ size_t impl_utf16_casemap(it_in_utf16 first, it_end_utf16 last,
         }
     }
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-    else if (mode == impl_casemap_mode_title)
+    else if (mode == casemap_mode::title)
         return utf16_title(first, last, result);
 #endif
 
@@ -1140,7 +1148,7 @@ size_t utf8_title(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result) {
 
         if (!make_lower) {
             // If Cased then make it title else output as is
-            if (stages_case_prop(c) & prop_Cased) {
+            if (stages_case_prop(c) & prop::cased) {
                 // Make lower all code points after title
                 make_lower = true;
 
@@ -1229,7 +1237,7 @@ size_t utf16_title(it_in_utf16 first, it_end_utf16 last, it_out_utf16 result) {
 
         if (!make_lower) {
             // If Cased then make it title else output as is
-            if (stages_case_prop(c) & prop_Cased) {
+            if (stages_case_prop(c) & prop::cased) {
                 // Make lower all code points after title
                 make_lower = true;
 

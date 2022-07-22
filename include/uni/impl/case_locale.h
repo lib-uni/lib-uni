@@ -43,9 +43,9 @@ bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (prop & prop_Soft_Dotted)
+        if (prop & prop::soft_dotted)
             return true;
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop::ccc_not_0) || (prop & prop::ccc_230))
             return false;
     }
 
@@ -72,9 +72,9 @@ bool utf8_more_above(it_in_utf8 src, it_end_utf8 last) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (prop & prop_CCC_230)
+        if (prop & prop::ccc_230)
             return true;
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop::ccc_not_0) || (prop & prop::ccc_230))
             return false;
     }
 
@@ -103,7 +103,7 @@ bool utf8_before_dot(it_in_utf8 src, it_end_utf8 last) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop::ccc_not_0) || (prop & prop::ccc_230))
             return false;
     }
 
@@ -131,7 +131,7 @@ bool utf8_after_i(it_in_utf8 first, it_in_utf8 src) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop::ccc_not_0) || (prop & prop::ccc_230))
             return false;
     }
 
@@ -153,9 +153,9 @@ bool utf16_after_soft_dotted(it_in_utf16 first, it_in_utf16 src) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (prop & prop_Soft_Dotted)
+        if (prop & prop::soft_dotted)
             return true;
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop::ccc_not_0) || (prop & prop::ccc_230))
             return false;
     }
 
@@ -174,9 +174,9 @@ bool utf16_more_above(it_in_utf16 src, it_end_utf16 last) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (prop & prop_CCC_230)
+        if (prop & prop::ccc_230)
             return true;
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop::ccc_not_0) || (prop & prop::ccc_230))
             return false;
     }
 
@@ -198,7 +198,7 @@ bool utf16_before_dot(it_in_utf16 src, it_end_utf16 last) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop::ccc_not_0) || (prop & prop::ccc_230))
             return false;
     }
 
@@ -220,7 +220,7 @@ bool utf16_after_i(it_in_utf16 first, it_in_utf16 src) {
 
         type_codept prop = stages_case_prop(c);
 
-        if (!(prop & prop_CCC_NOT_0) || (prop & prop_CCC_230))
+        if (!(prop & prop::ccc_not_0) || (prop & prop::ccc_230))
             return false;
     }
 
@@ -1200,7 +1200,7 @@ size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
 
         if (!make_lower) {
             // If Cased then make it title else output as is
-            if (stages_case_prop(c) & prop_Cased) {
+            if (stages_case_prop(c) & prop::cased) {
                 // Make lower all code points after title
                 make_lower = true;
 
@@ -1328,7 +1328,7 @@ size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
 
         if (!make_lower) {
             // If Cased then make it title else output as is
-            if (stages_case_prop(c) & prop_Cased) {
+            if (stages_case_prop(c) & prop::cased) {
                 // Make lower all code points after title
                 make_lower = true;
 
