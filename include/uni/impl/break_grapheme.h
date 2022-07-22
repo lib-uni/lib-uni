@@ -14,45 +14,54 @@
 
 namespace uni::detail {
 
-// See generator_break_grapheme in gen/gen.h
+enum class prop_gb : type_codept {
+    prepend = 1,
+    cr,
+    lf,
+    control,
+    extend,
+    regional_indicator,
+    spacing_mark,
+    l,
+    v,
+    t,
+    lv,
+    lvt,
+    zwj,
+    extended_pictographic,
+};
 
-inline constexpr type_codept prop_GB_Prepend = 1;
-inline constexpr type_codept prop_GB_CR = 2;
-inline constexpr type_codept prop_GB_LF = 3;
-inline constexpr type_codept prop_GB_Control = 4;
-inline constexpr type_codept prop_GB_Extend = 5;
-inline constexpr type_codept prop_GB_Regional_Indicator = 6;
-inline constexpr type_codept prop_GB_SpacingMark = 7;
-inline constexpr type_codept prop_GB_L = 8;
-inline constexpr type_codept prop_GB_V = 9;
-inline constexpr type_codept prop_GB_T = 10;
-inline constexpr type_codept prop_GB_LV = 11;
-inline constexpr type_codept prop_GB_LVT = 12;
-inline constexpr type_codept prop_GB_ZWJ = 13;
-inline constexpr type_codept prop_GB_Extended_Pictographic = 14;
+bool operator==(const prop_gb& lhs, const type_codept& rhs) {
+    return static_cast<type_codept>(lhs) == rhs;
+}
+bool operator==(const type_codept& lhs, const prop_gb& rhs) {
+    return lhs == static_cast<type_codept>(rhs);
+}
 
-inline constexpr int state_break_grapheme_begin = 0;
-inline constexpr int state_break_grapheme_process = 1;
-inline constexpr int state_break_grapheme_EP = 2;
-inline constexpr int state_break_grapheme_EP_ZWJ = 3;
-inline constexpr int state_break_grapheme_RI = 4;
-inline constexpr int state_break_grapheme_RI_RI = 5;
+enum class break_grapheme_state {
+    begin,
+    process,
+    ep,
+    ep_zwj,
+    ri,
+    ri_ri,
+};
 
 inline type_codept stages_break_grapheme_prop(type_codept c) {
     return stages(c, stage1_break_grapheme, stage2_break_grapheme);
 }
 
 struct impl_break_grapheme_state {
-    type_codept prev_cp;
-    type_codept prev_cp_prop;
-    int state;
+    type_codept prev_cp = 0;
+    type_codept prev_cp_prop = 0;
+    break_grapheme_state state = break_grapheme_state::begin;
 };
 
 inline void
 impl_break_grapheme_state_reset(struct impl_break_grapheme_state* state) {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
-    state->state = state_break_grapheme_begin;
+    state->state = break_grapheme_state::begin;
 }
 /*
 // TODO: see TODO below.
@@ -93,58 +102,58 @@ inline bool break_grapheme(struct impl_break_grapheme_state* state,
     // https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundary_Rules
     // Unicode 11.0 - 14.0 rules
 
-    if (state->state == state_break_grapheme_begin)
-        state->state = state_break_grapheme_process;
-    else if (p_prop == prop_GB_CR && c_prop == prop_GB_LF)  // GB3
+    if (state->state == break_grapheme_state::begin)
+        state->state = break_grapheme_state::process;
+    else if (p_prop == prop_gb::cr && c_prop == prop_gb::lf)  // GB3
         result = false;  // NOLINT
-    else if (p_prop == prop_GB_Control || p_prop == prop_GB_CR
-             || p_prop == prop_GB_LF)  // GB4
+    else if (p_prop == prop_gb::control || p_prop == prop_gb::cr
+             || p_prop == prop_gb::lf)  // GB4
         result = true;  // NOLINT
-    else if (c_prop == prop_GB_Control || c_prop == prop_GB_CR
-             || c_prop == prop_GB_LF)  // GB5
+    else if (c_prop == prop_gb::control || c_prop == prop_gb::cr
+             || c_prop == prop_gb::lf)  // GB5
         result = true;  // NOLINT
-    else if (p_prop == prop_GB_L
-             && (c_prop == prop_GB_L || c_prop == prop_GB_V
-                 || c_prop == prop_GB_LV || c_prop == prop_GB_LVT))  // GB6
+    else if (p_prop == prop_gb::l
+             && (c_prop == prop_gb::l || c_prop == prop_gb::v
+                 || c_prop == prop_gb::lv || c_prop == prop_gb::lvt))  // GB6
         result = false;  // NOLINT
-    else if ((p_prop == prop_GB_LV || p_prop == prop_GB_V)
-             && (c_prop == prop_GB_V || c_prop == prop_GB_T))  // GB7
+    else if ((p_prop == prop_gb::lv || p_prop == prop_gb::v)
+             && (c_prop == prop_gb::v || c_prop == prop_gb::t))  // GB7
         result = false;  // NOLINT
-    else if ((p_prop == prop_GB_LVT || p_prop == prop_GB_T)
-             && c_prop == prop_GB_T)  // GB8
+    else if ((p_prop == prop_gb::lvt || p_prop == prop_gb::t)
+             && c_prop == prop_gb::t)  // GB8
         result = false;  // NOLINT
-    else if (c_prop == prop_GB_Extend || c_prop == prop_GB_ZWJ)  // GB9
+    else if (c_prop == prop_gb::extend || c_prop == prop_gb::zwj)  // GB9
         result = false;  // NOLINT
-    else if (c_prop == prop_GB_SpacingMark)  // GB9a
+    else if (c_prop == prop_gb::spacing_mark)  // GB9a
         result = false;  // NOLINT
-    else if (p_prop == prop_GB_Prepend)  // GB9b
+    else if (p_prop == prop_gb::prepend)  // GB9b
         result = false;  // NOLINT
-    else if (state->state == state_break_grapheme_EP_ZWJ
-             && c_prop == prop_GB_Extended_Pictographic)  // GB11
+    else if (state->state == break_grapheme_state::ep_zwj
+             && c_prop == prop_gb::extended_pictographic)  // GB11
         result = false;  // NOLINT
-    else if (state->state == state_break_grapheme_RI
-             && c_prop == prop_GB_Regional_Indicator)  // GB12/GB13
+    else if (state->state == break_grapheme_state::ri
+             && c_prop == prop_gb::regional_indicator)  // GB12/GB13
         result = false;  // NOLINT
     else  // GB999
         result = true;  // NOLINT
 
     // GB12/GB13
-    if (c_prop == prop_GB_Regional_Indicator) {
-        if (state->state == state_break_grapheme_RI)
-            state->state = state_break_grapheme_RI_RI;
+    if (c_prop == prop_gb::regional_indicator) {
+        if (state->state == break_grapheme_state::ri)
+            state->state = break_grapheme_state::ri_ri;
         else
-            state->state = state_break_grapheme_RI;
+            state->state = break_grapheme_state::ri;
     }
     // GB11
-    else if (c_prop == prop_GB_Extended_Pictographic)
-        state->state = state_break_grapheme_EP;  // NOLINT
-    else if (state->state == state_break_grapheme_EP
-             && c_prop == prop_GB_Extend)
-        state->state = state_break_grapheme_EP;  // NOLINT
-    else if (state->state == state_break_grapheme_EP && c_prop == prop_GB_ZWJ)
-        state->state = state_break_grapheme_EP_ZWJ;
+    else if (c_prop == prop_gb::extended_pictographic)
+        state->state = break_grapheme_state::ep;  // NOLINT
+    else if (state->state == break_grapheme_state::ep
+             && c_prop == prop_gb::extend)
+        state->state = break_grapheme_state::ep;  // NOLINT
+    else if (state->state == break_grapheme_state::ep && c_prop == prop_gb::zwj)
+        state->state = break_grapheme_state::ep_zwj;
     else
-        state->state = state_break_grapheme_process;
+        state->state = break_grapheme_state::process;
 
     state->prev_cp = c;
     state->prev_cp_prop = c_prop;
