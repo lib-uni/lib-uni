@@ -8,8 +8,6 @@
 
 // The internal defines are lowercased because they make too much noise in the code if uppercased.
 
-// FIX: delete this
-#define uaix_always_inline inline
 
 // Must not be used without performance testing it can degrade performance in many cases
 #if defined(__GNUC__) || defined(__clang__)

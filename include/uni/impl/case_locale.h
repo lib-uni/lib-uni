@@ -233,10 +233,8 @@ bool utf16_after_i(it_in_utf16 first, it_in_utf16 src) {
 #ifdef __cplusplus
 template<typename it_out_utf8, typename it_in_utf8>
 #endif
-inline it_out_utf8 utf8_locale_upper_lt(type_codept c,
-                                                    it_out_utf8 dst,
-                                                    it_in_utf8 first,
-                                                    it_in_utf8 prev) {
+inline it_out_utf8 utf8_locale_upper_lt(type_codept c, it_out_utf8 dst,
+                                        it_in_utf8 first, it_in_utf8 prev) {
     // SpecialCasing.txt # Lithuanian
 
     if (c == 0x0307 && utf8_after_soft_dotted(first, prev))
@@ -265,9 +263,9 @@ inline it_out_utf8 utf8_locale_upper_lt(type_codept c,
 #ifdef __cplusplus
 template<typename it_out_utf8, typename it_in_utf8, typename it_end_utf8>
 #endif
-inline it_out_utf8
-utf8_locale_lower_lt(type_codept c, it_out_utf8 dst, it_in_utf8 src,
-                     it_end_utf8 last, it_in_utf8 first, it_in_utf8 prev) {
+inline it_out_utf8 utf8_locale_lower_lt(type_codept c, it_out_utf8 dst,
+                                        it_in_utf8 src, it_end_utf8 last,
+                                        it_in_utf8 first, it_in_utf8 prev) {
     // SpecialCasing.txt # Lithuanian
 
     if (c == 0x0049 && utf8_more_above(src, last)) {
@@ -343,8 +341,7 @@ utf8_locale_lower_lt(type_codept c, it_out_utf8 dst, it_in_utf8 src,
 #ifdef __cplusplus
 template<typename it_out_utf8>
 #endif
-inline it_out_utf8 utf8_locale_upper_tr_az(type_codept c,
-                                                       it_out_utf8 dst) {
+inline it_out_utf8 utf8_locale_upper_tr_az(type_codept c, it_out_utf8 dst) {
     // SpecialCasing.txt # Turkish and Azeri
 
     if (c == 0x0069) {
@@ -376,9 +373,9 @@ inline it_out_utf8 utf8_locale_upper_tr_az(type_codept c,
 #ifdef __cplusplus
 template<typename it_out_utf8, typename it_in_utf8, typename it_end_utf8>
 #endif
-inline it_out_utf8
-utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst, it_in_utf8 src,
-                        it_end_utf8 last, it_in_utf8 first, it_in_utf8 prev) {
+inline it_out_utf8 utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst,
+                                           it_in_utf8 src, it_end_utf8 last,
+                                           it_in_utf8 first, it_in_utf8 prev) {
     // SpecialCasing.txt # Turkish and Azeri
 
     if (c == 0x0130) {
@@ -423,10 +420,8 @@ utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst, it_in_utf8 src,
 #ifdef __cplusplus
 template<typename it_out_utf16, typename it_in_utf16>
 #endif
-inline it_out_utf16 utf16_locale_upper_lt(type_codept c,
-                                                      it_out_utf16 dst,
-                                                      it_in_utf16 first,
-                                                      it_in_utf16 prev) {
+inline it_out_utf16 utf16_locale_upper_lt(type_codept c, it_out_utf16 dst,
+                                          it_in_utf16 first, it_in_utf16 prev) {
     // SpecialCasing.txt # Lithuanian
 
     if (c == 0x0307 && utf16_after_soft_dotted(first, prev))
@@ -455,9 +450,9 @@ inline it_out_utf16 utf16_locale_upper_lt(type_codept c,
 #ifdef __cplusplus
 template<typename it_out_utf16, typename it_in_utf16, typename it_end_utf16>
 #endif
-inline it_out_utf16
-utf16_locale_lower_lt(type_codept c, it_out_utf16 dst, it_in_utf16 src,
-                      it_end_utf16 last, it_in_utf16 first, it_in_utf16 prev) {
+inline it_out_utf16 utf16_locale_lower_lt(type_codept c, it_out_utf16 dst,
+                                          it_in_utf16 src, it_end_utf16 last,
+                                          it_in_utf16 first, it_in_utf16 prev) {
     // SpecialCasing.txt # Lithuanian
 
     if (c == 0x0049 && utf16_more_above(src, last)) {
@@ -521,8 +516,7 @@ utf16_locale_lower_lt(type_codept c, it_out_utf16 dst, it_in_utf16 src,
 #ifdef __cplusplus
 template<typename it_out_utf16>
 #endif
-inline it_out_utf16 utf16_locale_upper_tr_az(type_codept c,
-                                                         it_out_utf16 dst) {
+inline it_out_utf16 utf16_locale_upper_tr_az(type_codept c, it_out_utf16 dst) {
     // SpecialCasing.txt # Turkish and Azeri
 
     if (c == 0x0069) {
@@ -553,9 +547,10 @@ inline it_out_utf16 utf16_locale_upper_tr_az(type_codept c,
 #ifdef __cplusplus
 template<typename it_out_utf16, typename it_in_utf16, typename it_end_utf16>
 #endif
-inline it_out_utf16 utf16_locale_lower_tr_az(
-    type_codept c, it_out_utf16 dst, it_in_utf16 src, it_end_utf16 last,
-    it_in_utf16 first, it_in_utf16 prev) {
+inline it_out_utf16 utf16_locale_lower_tr_az(type_codept c, it_out_utf16 dst,
+                                             it_in_utf16 src, it_end_utf16 last,
+                                             it_in_utf16 first,
+                                             it_in_utf16 prev) {
     // SpecialCasing.txt # Turkish and Azeri
 
     if (c == 0x0130) {
@@ -594,7 +589,7 @@ inline it_out_utf16 utf16_locale_lower_tr_az(
     return dst;
 }
 
-uaix_always_inline
+inline
     // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
     type_codept
     case_greek_upper(type_codept c, bool* prev_vowel_with_accent,
@@ -1067,8 +1062,7 @@ uaix_always_inline
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last,
-                                 it_out_utf8 result) {
+size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result) {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
     type_codept c = 0;
@@ -1117,7 +1111,7 @@ size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last,
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
 size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last,
-                                  it_out_utf16 result) {
+                      it_out_utf16 result) {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
     type_codept c = 0;
@@ -1166,8 +1160,8 @@ size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last,
     #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
     #endif
-size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last,
-                                     it_out_utf8 result, int locale) {
+size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
+                         int locale) {
     // The function is the same as utf8_title except LOCALE BEGIN - LOCALE END parts
 
     it_in_utf8 src = first;
@@ -1295,7 +1289,7 @@ size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last,
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
     #endif
 size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
-                                      it_out_utf16 result, int locale) {
+                          it_out_utf16 result, int locale) {
     // The function is the same as utf16_title except LOCALE BEGIN - LOCALE END parts
 
     it_in_utf16 src = first;
@@ -1422,7 +1416,7 @@ size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
 size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
-                                            it_out_utf8 result, int locale) {
+                                it_out_utf8 result, int locale) {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
     type_codept c = 0;
@@ -1477,9 +1471,8 @@ size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-size_t impl_utf16_casemap_locale(it_in_utf16 first,
-                                             it_end_utf16 last,
-                                             it_out_utf16 result, int locale) {
+size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last,
+                                 it_out_utf16 result, int locale) {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
     type_codept c = 0;

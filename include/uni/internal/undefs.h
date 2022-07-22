@@ -6,8 +6,6 @@
 
 // Internal undefs, must be used together with impl_defines.h
 
-#undef uaix_always_inline
-#undef uaix_always_inline_tmpl
 #undef uaix_likely
 #undef uaix_unlikely
 #undef uaix_const

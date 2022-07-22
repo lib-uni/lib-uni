@@ -39,7 +39,7 @@ uaix_const int state_break_grapheme_EP_ZWJ = 3;
 uaix_const int state_break_grapheme_RI = 4;
 uaix_const int state_break_grapheme_RI_RI = 5;
 
-uaix_always_inline type_codept stages_break_grapheme_prop(type_codept c) {
+inline type_codept stages_break_grapheme_prop(type_codept c) {
     return stages(c, stage1_break_grapheme, stage2_break_grapheme);
 }
 
@@ -49,7 +49,7 @@ struct impl_break_grapheme_state {
     int state;
 };
 
-uaix_always_inline void
+inline void
 impl_break_grapheme_state_reset(struct impl_break_grapheme_state* state) {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
@@ -79,8 +79,8 @@ const bool break_table_grapheme[15][15] =
     {1,  1, 1, 1,  0,  1, 1,  0,  1, 1, 1, 1, 1,  1, 0}, // ZWJ
 };
 */
-uaix_always_inline bool break_grapheme(struct impl_break_grapheme_state* state,
-                                       type_codept c) {
+inline bool break_grapheme(struct impl_break_grapheme_state* state,
+                           type_codept c) {
     // TODO: https://unicode.org/reports/tr29/#State_Machines
     // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.html
     // See state table above.
@@ -163,8 +163,8 @@ bool impl_break_grapheme(struct impl_break_grapheme_state* state,
     return break_grapheme(state, c);
 }
 
-uaix_always_inline bool
-inline_break_grapheme(struct impl_break_grapheme_state* state, type_codept c) {
+inline bool inline_break_grapheme(struct impl_break_grapheme_state* state,
+                                  type_codept c) {
     return break_grapheme(state, c);
 }
 
