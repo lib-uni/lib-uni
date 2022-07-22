@@ -1467,7 +1467,7 @@ struct impl_norm_iter_state {
     unsigned char buffer_ccc[norm_buffer_size];
 };
 
-uaix_inline void impl_norm_iter_state_reset(struct impl_norm_iter_state* s) {
+inline void impl_norm_iter_state_reset(struct impl_norm_iter_state* s) {
     s->size = 0;
     s->last_qc = 0;
     s->count_ns = 0;

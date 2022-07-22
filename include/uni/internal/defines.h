@@ -21,8 +21,6 @@
 #endif
 
 // FIX: delete below
-#define uaix_static
-#define uaix_inline inline
 #define uaix_const inline constexpr
 
 // The define can be used to switch Unicode data to static (constexpr in C++) mode

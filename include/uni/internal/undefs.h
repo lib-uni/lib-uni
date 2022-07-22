@@ -10,12 +10,11 @@
 #undef uaix_always_inline_tmpl
 #undef uaix_likely
 #undef uaix_unlikely
-#undef uaix_inline
 #undef uaix_const
 #undef uaix_const_data
 
 #ifdef __cplusplus
-#  if defined(__GNUC__) || defined(__clang__)
-#    pragma GCC diagnostic pop
-#  endif
+    #if defined(__GNUC__) || defined(__clang__)
+        #pragma GCC diagnostic pop
+    #endif
 #endif
