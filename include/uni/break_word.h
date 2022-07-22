@@ -2,27 +2,25 @@
  * License: Public Domain or MIT - choose whatever you want.
  * See notice at the end of this file. */
 
-#ifndef CPP_UNI_BREAK_WORD_H_UAIX
-#define CPP_UNI_BREAK_WORD_H_UAIX
+#pragma once
 
 #ifdef UNI_ALGO_DISABLE_BREAK_WORD
-#  error "Break Word module is disabled via define UNI_ALGO_DISABLE_BREAK_WORD"
+    #error \
+        "Break Word module is disabled via define UNI_ALGO_DISABLE_BREAK_WORD"
 #endif
 
-#include <type_traits>
-#include <cassert>
-
 #include <uni/config.h>
+#include <uni/impl/break_word.h>
 #include <uni/version.h>
 
-#include <uni/impl/break_word.h>
+#include <cassert>
+#include <type_traits>
 
 namespace uni::breaks::word {
 
 template<class Iter, class Sent = Iter>
-class utf8
-{
-private:
+class utf8 {
+  private:
     Iter it_begin;
     Sent it_end;
     Iter it_pos;
@@ -30,69 +28,86 @@ private:
     detail::type_codept word_prop = 0;
     detail::type_codept next_word_prop = 0;
 
-    detail::impl_break_word_state state{};
+    detail::impl_break_word_state state;
 
-public:
+  public:
     // Only forward iterator can be used with default Word Boundary Rules
     // TODO: add static_assert for this
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = void;
-    using pointer           = void;
-    using reference         = void;
-    using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+    using value_type = void;
+    using pointer = void;
+    using reference = void;
+    using difference_type =
+        typename std::iterator_traits<Iter>::difference_type;
 
-    using is_random_access_iterator_or_lower =
-        std::is_convertible<typename std::iterator_traits<Iter>::iterator_category, std::random_access_iterator_tag>;
+    using is_random_access_iterator_or_lower = std::is_convertible<
+        typename std::iterator_traits<Iter>::iterator_category,
+        std::random_access_iterator_tag>;
 
     utf8() = default;
-    explicit utf8(Iter begin, Sent end)
-        : it_begin{begin}, it_end{end}, it_pos{begin}, it_next{begin}
-    {
-        detail::impl_break_word_state_reset(&state);
+    explicit utf8(Iter begin, Sent end) :
+        it_begin {begin}, it_end {end}, it_pos {begin}, it_next {begin} {}
+    explicit utf8(Iter end) : utf8 {end, end} {}
+    bool word_on_left() const noexcept {
+        return detail::impl_break_is_word(word_prop);
     }
-    explicit utf8(Iter end)
-        : utf8{end, end} {}
-    bool word_on_left() const noexcept { return detail::impl_break_is_word(word_prop); }
-    utf8& operator++()
-    {
-        while (it_next != it_end)
-        {
+    utf8& operator++() {
+        while (it_next != it_end) {
             it_pos = it_next;
             word_prop = next_word_prop;
             detail::type_codept codepoint = 0;
-            it_next = detail::inline_utf8_iter(it_next, it_end, &codepoint, detail::impl_iter_replacement);
-            if (detail::inline_utf8_break_word(&state, codepoint, &next_word_prop, it_next, it_end))
+            it_next = detail::inline_utf8_iter(it_next, it_end, &codepoint,
+                                               detail::impl_iter_replacement);
+            if (detail::inline_utf8_break_word(
+                    &state, codepoint, &next_word_prop, it_next, it_end))
                 return *this;
         }
 
-        if (it_next == it_end)
-        {
+        if (it_next == it_end) {
             it_pos = it_next;
             word_prop = next_word_prop;
         }
 
         return *this;
     }
-    utf8 operator++(int)
-    {
+    utf8 operator++(int) {
         utf8 tmp = *this;
         operator++();
         return tmp;
     }
-    template<class T = difference_type> typename std::enable_if_t<is_random_access_iterator_or_lower::value, T>
-    friend operator-(const utf8& x, const utf8& y) { return x.it_pos - y.it_pos; }
-    friend bool operator==(const utf8& x, const utf8& y) { return (x.it_pos == y.it_pos); }
-    friend bool operator!=(const utf8& x, const utf8& y) { return (x.it_pos != y.it_pos); }
-    template<class S> friend bool operator==(const utf8& x, const S&) { return (x.it_pos == x.it_end); }
-    template<class S> friend bool operator!=(const utf8& x, const S&) { return (x.it_pos != x.it_end); }
-    template<class S> friend bool operator==(const S&, const utf8& x) { return (x.it_pos == x.it_end); }
-    template<class S> friend bool operator!=(const S&, const utf8& x) { return (x.it_pos != x.it_end); }
+    template<class T = difference_type>
+    typename std::enable_if_t<is_random_access_iterator_or_lower::value,
+                              T> friend
+    operator-(const utf8& x, const utf8& y) {
+        return x.it_pos - y.it_pos;
+    }
+    friend bool operator==(const utf8& x, const utf8& y) {
+        return (x.it_pos == y.it_pos);
+    }
+    friend bool operator!=(const utf8& x, const utf8& y) {
+        return (x.it_pos != y.it_pos);
+    }
+    template<class S>
+    friend bool operator==(const utf8& x, const S&) {
+        return (x.it_pos == x.it_end);
+    }
+    template<class S>
+    friend bool operator!=(const utf8& x, const S&) {
+        return (x.it_pos != x.it_end);
+    }
+    template<class S>
+    friend bool operator==(const S&, const utf8& x) {
+        return (x.it_pos == x.it_end);
+    }
+    template<class S>
+    friend bool operator!=(const S&, const utf8& x) {
+        return (x.it_pos != x.it_end);
+    }
 };
 
 template<class Iter, class Sent = Iter>
-class utf16
-{
-private:
+class utf16 {
+  private:
     Iter it_begin;
     Sent it_end;
     Iter it_pos;
@@ -100,68 +115,83 @@ private:
     detail::type_codept word_prop = 0;
     detail::type_codept next_word_prop = 0;
 
-    detail::impl_break_word_state state{};
+    detail::impl_break_word_state state;
 
-public:
+  public:
     // Only forward iterator can be used with default Word Boundary Rules.
     // TODO: where is static_assert for this?
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = void;
-    using pointer           = void;
-    using reference         = void;
-    using difference_type   = typename std::iterator_traits<Iter>::difference_type;
+    using value_type = void;
+    using pointer = void;
+    using reference = void;
+    using difference_type =
+        typename std::iterator_traits<Iter>::difference_type;
 
-    using is_random_access_iterator_or_lower =
-        std::is_convertible<typename std::iterator_traits<Iter>::iterator_category, std::random_access_iterator_tag>;
+    using is_random_access_iterator_or_lower = std::is_convertible<
+        typename std::iterator_traits<Iter>::iterator_category,
+        std::random_access_iterator_tag>;
 
     utf16() = default;
-    explicit utf16(Iter begin, Sent end)
-        : it_begin{begin}, it_end{end}, it_pos{begin}, it_next{begin}
-    {
-        detail::impl_break_word_state_reset(&state);
+    explicit utf16(Iter begin, Sent end) :
+        it_begin {begin}, it_end {end}, it_pos {begin}, it_next {begin} {}
+    explicit utf16(Iter end) : utf16 {end, end} {}
+    bool word_on_left() const noexcept {
+        return detail::impl_break_is_word(word_prop);
     }
-    explicit utf16(Iter end)
-        : utf16{end, end} {}
-    bool word_on_left() const noexcept { return detail::impl_break_is_word(word_prop); }
-    utf16& operator++()
-    {
-        while (it_next != it_end)
-        {
+    utf16& operator++() {
+        while (it_next != it_end) {
             it_pos = it_next;
             word_prop = next_word_prop;
             detail::type_codept codepoint = 0;
-            it_next = detail::inline_utf16_iter(it_next, it_end, &codepoint, detail::impl_iter_replacement);
-            if (detail::inline_utf16_break_word(&state, codepoint, &next_word_prop, it_next, it_end))
+            it_next = detail::inline_utf16_iter(it_next, it_end, &codepoint,
+                                                detail::impl_iter_replacement);
+            if (detail::inline_utf16_break_word(
+                    &state, codepoint, &next_word_prop, it_next, it_end))
                 return *this;
         }
 
-        if (it_next == it_end)
-        {
+        if (it_next == it_end) {
             it_pos = it_next;
             word_prop = next_word_prop;
         }
 
         return *this;
     }
-    utf16 operator++(int)
-    {
+    utf16 operator++(int) {
         utf16 tmp = *this;
         operator++();
         return tmp;
     }
-    template<class T = difference_type> typename std::enable_if_t<is_random_access_iterator_or_lower::value, T>
-    operator-(const utf16& rhs) { return (it_pos - rhs.it_pos); }
-    friend bool operator==(const utf16& x, const utf16& y) { return (x.it_pos == y.it_pos); }
-    friend bool operator!=(const utf16& x, const utf16& y) { return (x.it_pos != y.it_pos); }
-    template<class S> friend bool operator==(const utf16& x, const S&) { return (x.it_pos == x.it_end); }
-    template<class S> friend bool operator!=(const utf16& x, const S&) { return (x.it_pos != x.it_end); }
-    template<class S> friend bool operator==(const S&, const utf16& x) { return (x.it_pos == x.it_end); }
-    template<class S> friend bool operator!=(const S&, const utf16& x) { return (x.it_pos != x.it_end); }
+    template<class T = difference_type>
+    typename std::enable_if_t<is_random_access_iterator_or_lower::value, T>
+    operator-(const utf16& rhs) {
+        return (it_pos - rhs.it_pos);
+    }
+    friend bool operator==(const utf16& x, const utf16& y) {
+        return (x.it_pos == y.it_pos);
+    }
+    friend bool operator!=(const utf16& x, const utf16& y) {
+        return (x.it_pos != y.it_pos);
+    }
+    template<class S>
+    friend bool operator==(const utf16& x, const S&) {
+        return (x.it_pos == x.it_end);
+    }
+    template<class S>
+    friend bool operator!=(const utf16& x, const S&) {
+        return (x.it_pos != x.it_end);
+    }
+    template<class S>
+    friend bool operator==(const S&, const utf16& x) {
+        return (x.it_pos == x.it_end);
+    }
+    template<class S>
+    friend bool operator!=(const S&, const utf16& x) {
+        return (x.it_pos != x.it_end);
+    }
 };
 
-} // namespace uni::breaks::word
-
-#endif // CPP_UNI_BREAK_WORD_H_UAIX
+}  // namespace uni::breaks::word
 
 /* Public Domain License
  *

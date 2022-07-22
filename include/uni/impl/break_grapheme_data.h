@@ -2,7 +2,7 @@
 
 #include <uni/internal/defines.h>
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
+namespace uni::detail {
 
 uaix_const_data unsigned char stage1_break_grapheme[] = {
 0,1,2,2,2,2,3,2,
@@ -3629,6 +3629,6 @@ uaix_const_data unsigned char stage2_break_grapheme[] = {
 4,4,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4};
 
-UNI_ALGO_IMPL_NAMESPACE_END
+}
 
 #include <uni/internal/undefs.h>

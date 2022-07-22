@@ -2,7 +2,7 @@
 
 #include <uni/internal/defines.h>
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
+namespace uni::detail {
 
 uaix_const_data unsigned char stage1_lower[] = {
 0,1,2,3,4,5,6,7,
@@ -18319,6 +18319,6 @@ uaix_const_data unsigned short stage3_special_lower[][4] = {
 
 #endif // UNI_ALGO_DISABLE_FULL_CASE
 
-UNI_ALGO_IMPL_NAMESPACE_END
+}
 
 #include <uni/internal/undefs.h>

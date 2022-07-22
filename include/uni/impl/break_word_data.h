@@ -1,10 +1,8 @@
 // Unicode 14.0.0
 
-#include <uni/internal/defines.h>
+namespace uni::detail {
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
-
-uaix_const_data unsigned char stage1_break_word[] = {
+inline constexpr unsigned char stage1_break_word[] = {
 0,1,2,2,2,3,4,5,
 2,6,7,8,9,10,11,12,
 13,14,15,16,17,18,19,20,
@@ -1094,7 +1092,7 @@ uaix_const_data unsigned char stage1_break_word[] = {
 57,57,57,57,57,57,57,57,
 57,57,57,57,57,57,57,57};
 
-uaix_const_data unsigned char stage2_break_word[] = {
+inline constexpr unsigned char stage2_break_word[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,5,6,6,4,0,0,
@@ -4870,6 +4868,5 @@ uaix_const_data unsigned char stage2_break_word[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-UNI_ALGO_IMPL_NAMESPACE_END
+}
 
-#include <uni/internal/undefs.h>

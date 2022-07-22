@@ -2,22 +2,22 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See notice at the end of this file. */
 
-#ifndef IMPL_ITERATOR_H_UAIX
-#define IMPL_ITERATOR_H_UAIX
+#pragma once
 
+#include <type_traits>
+
+#include <uni/config.h>
 #include <uni/internal/defines.h>
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
+namespace uni::detail {
+uaix_const type_codept iter_replacement =
+    0xFFFD;  // REPLACEMENT CHARACTER (U+FFFD)
+uaix_const type_codept iter_error =
+    0xFFFFFFFF;  // Any number outside Unicode range is fine
 
-uaix_const type_codept iter_replacement = 0xFFFD; // REPLACEMENT CHARACTER (U+FFFD)
-uaix_const type_codept iter_error = 0xFFFFFFFF; // Any number outside Unicode range is fine
-
-#ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_in_utf8 utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
-{
+inline it_in_utf8 utf8_iter(it_in_utf8 first, it_end_utf8 last,
+                            type_codept* codepoint, type_codept error) {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: input, forward, bidirectional, random access, contiguous
 
@@ -27,95 +27,72 @@ uaix_static it_in_utf8 utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept
 
     type_codept c = (*s & 0xFF), c2, c3, c4;
 
-    if (uaix_likely(c <= 0x7F)) // Fast route for ASCII
+    if (uaix_likely(c <= 0x7F))  // Fast route for ASCII
     {
         *codepoint = c;
         return ++s;
-    }
-    else if (c >= 0xC2 && c <= 0xDF)
-    {
-        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF))
-        {
+    } else if (c >= 0xC2 && c <= 0xDF) {
+        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF)) {
             c = ((c & 0x1F) << 6) + (c2 & 0x3F);
             *codepoint = c;
             return ++s;
         }
-    }
-    else if (c >= 0xE1 && c <= 0xEC)
-    { // NOLINT(bugprone-branch-clone)
-        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF) &&
-            ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
-        {
+    } else if (c >= 0xE1 && c <= 0xEC) {  // NOLINT(bugprone-branch-clone)
+        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF)
+            && ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF)) {
             c = ((c & 0x0F) << 12) + ((c2 & 0x3F) << 6) + (c3 & 0x3F);
             *codepoint = c;
             return ++s;
         }
-    }
-    else if (c >= 0xEE && c <= 0xEF)
-    { // NOLINT(bugprone-branch-clone)
-        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF) &&
-            ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
-        {
+    } else if (c >= 0xEE && c <= 0xEF) {  // NOLINT(bugprone-branch-clone)
+        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF)
+            && ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF)) {
             c = ((c & 0x0F) << 12) + ((c2 & 0x3F) << 6) + (c3 & 0x3F);
             *codepoint = c;
             return ++s;
         }
-    }
-    else if (c == 0xE0)
-    {
-        if (++s != last && ((c2 = (*s & 0xFF)) >= 0xA0 && c2 <= 0xBF) &&
-            ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
-        {
+    } else if (c == 0xE0) {
+        if (++s != last && ((c2 = (*s & 0xFF)) >= 0xA0 && c2 <= 0xBF)
+            && ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF)) {
             c = ((c & 0x0F) << 12) + ((c2 & 0x3F) << 6) + (c3 & 0x3F);
             *codepoint = c;
             return ++s;
         }
-    }
-    else if (c == 0xED)
-    {
-        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0x9F) &&
-            ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF))
-        {
+    } else if (c == 0xED) {
+        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0x9F)
+            && ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF)) {
             c = ((c & 0x0F) << 12) + ((c2 & 0x3F) << 6) + (c3 & 0x3F);
             *codepoint = c;
             return ++s;
         }
-    }
-    else if (c == 0xF0)
-    {
-        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x90 && c2 <= 0xBF) &&
-            ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF) &&
-            ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF))
-        {
-            c = ((c & 0x07) << 18) + ((c2 & 0x3F) << 12) + ((c3 & 0x3F) << 6) + (c4 & 0x3F);
+    } else if (c == 0xF0) {
+        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x90 && c2 <= 0xBF)
+            && ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF)
+            && ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF)) {
+            c = ((c & 0x07) << 18) + ((c2 & 0x3F) << 12) + ((c3 & 0x3F) << 6)
+                + (c4 & 0x3F);
             *codepoint = c;
             return ++s;
         }
-    }
-    else if (c == 0xF4)
-    {
-        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0x8F) &&
-            ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF) &&
-            ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF))
-        {
-            c = ((c & 0x07) << 18) + ((c2 & 0x3F) << 12) + ((c3 & 0x3F) << 6) + (c4 & 0x3F);
+    } else if (c == 0xF4) {
+        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0x8F)
+            && ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF)
+            && ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF)) {
+            c = ((c & 0x07) << 18) + ((c2 & 0x3F) << 12) + ((c3 & 0x3F) << 6)
+                + (c4 & 0x3F);
             *codepoint = c;
             return ++s;
         }
-    }
-    else if (c >= 0xF1 && c <= 0xF3)
-    {
-        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF) &&
-            ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF) &&
-            ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF))
-        {
-            c = ((c & 0x07) << 18) + ((c2 & 0x3F) << 12) + ((c3 & 0x3F) << 6) + (c4 & 0x3F);
+    } else if (c >= 0xF1 && c <= 0xF3) {
+        if (++s != last && ((c2 = (*s & 0xFF)) >= 0x80 && c2 <= 0xBF)
+            && ++s != last && ((c3 = (*s & 0xFF)) >= 0x80 && c3 <= 0xBF)
+            && ++s != last && ((c4 = (*s & 0xFF)) >= 0x80 && c4 <= 0xBF)) {
+            c = ((c & 0x07) << 18) + ((c2 & 0x3F) << 12) + ((c3 & 0x3F) << 6)
+                + (c4 & 0x3F);
             *codepoint = c;
             return ++s;
         }
-    }
-    else
-    {
+    } else {
         // invalid code unit
         ++s;
     }
@@ -131,12 +108,9 @@ uaix_static it_in_utf8 utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept
     return s;
 }
 
-#ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_in_utf16 utf16_iter(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
-{
+inline it_in_utf16 utf16_iter(it_in_utf16 first, it_end_utf16 last,
+                              type_codept* codepoint, type_codept error) {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: input, forward, bidirectional, random access, contiguous
 
@@ -144,26 +118,25 @@ uaix_static it_in_utf16 utf16_iter(it_in_utf16 first, it_end_utf16 last, type_co
 
     type_codept h = (*src++ & 0xFFFF);
 
-    if (uaix_unlikely(h >= 0xD800 && h <= 0xDFFF)) // Surrogate pair
+    if (uaix_unlikely(h >= 0xD800 && h <= 0xDFFF))  // Surrogate pair
     {
-        if (/*h >= 0xD800 &&*/ h <= 0xDBFF) // High surrogate is in range
+        if (/*h >= 0xD800 &&*/ h <= 0xDBFF)  // High surrogate is in range
         {
-            if (src != last) // Unpaired high surrogate if reached the end here
+            if (src != last)  // Unpaired high surrogate if reached the end here
             {
                 type_codept l = (*src & 0xFFFF);
 
-                if (l >= 0xDC00 && l <= 0xDFFF) // Low surrogate is in range
+                if (l >= 0xDC00 && l <= 0xDFFF)  // Low surrogate is in range
                 {
-                    type_codept c = ((h - 0xD800) << 10) + (l - 0xDC00) + 0x10000;
+                    type_codept c =
+                        ((h - 0xD800) << 10) + (l - 0xDC00) + 0x10000;
                     *codepoint = c;
                     src++;
                     return src;
                 }
             }
         }
-    }
-    else
-    {
+    } else {
         *codepoint = h;
         return src;
     }
@@ -181,9 +154,8 @@ uaix_static it_in_utf16 utf16_iter(it_in_utf16 first, it_end_utf16 last, type_co
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_always_inline_tmpl
-uaix_static it_in_utf8 utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
-{
+inline it_in_utf8 utf8_iter_rev(it_in_utf8 first, it_in_utf8 last,
+                                type_codept* codepoint, type_codept error) {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: bidirectional, random access, contiguous
 
@@ -191,7 +163,8 @@ uaix_static it_in_utf8 utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_cod
     it_in_utf8 forward = last;
 
     // Go back by 1 code point by skipping tails
-    while (--src != first && ((*src & 0xFF) & 0xC0) == 0x80);
+    while (--src != first && ((*src & 0xFF) & 0xC0) == 0x80)
+        ;
 
     // Read next code point
     forward = utf8_iter(src, last, codepoint, error);
@@ -200,17 +173,14 @@ uaix_static it_in_utf8 utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_cod
         return src;
 
     // Multiple invalid code units then
-    *codepoint = error; // For readability, utf8_iter returns error anyway
+    *codepoint = error;  // For readability, utf8_iter returns error anyway
     src = last;
-    return --src; // Go back by 1 code unit
+    return --src;  // Go back by 1 code unit
 }
 
-#ifdef __cplusplus
 template<typename it_in_utf16>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_in_utf16 utf16_iter_rev(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
-{
+inline it_in_utf16 utf16_iter_rev(it_in_utf16 first, it_in_utf16 last,
+                                  type_codept* codepoint, type_codept error) {
     // If first >= last the behaviour is undefined
     // C++ Note: works with iterators: bidirectional, random access, contiguous
 
@@ -218,7 +188,9 @@ uaix_static it_in_utf16 utf16_iter_rev(it_in_utf16 first, it_in_utf16 last, type
     it_in_utf16 forward = last;
 
     // Go back by 1 code point by skipping low surrogates
-    while (--src != first && ((*src & 0xFFFF) >= 0xDC00 && (*src & 0xFFFF) <= 0xDFFF));
+    while (--src != first
+           && ((*src & 0xFFFF) >= 0xDC00 && (*src & 0xFFFF) <= 0xDFFF))
+        ;
 
     // Read next code point
     forward = utf16_iter(src, last, codepoint, error);
@@ -227,55 +199,37 @@ uaix_static it_in_utf16 utf16_iter_rev(it_in_utf16 first, it_in_utf16 last, type
         return src;
 
     // Multiple invalid code units then
-    *codepoint = error; // For readability, utf16_iter returns error anyway
+    *codepoint = error;  // For readability, utf16_iter returns error anyway
     src = last;
-    return --src; // Go back by 1 code unit
+    return --src;  // Go back by 1 code unit
 }
 
-#ifdef __cplusplus
 template<typename it_out_utf8>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_out_utf8 codepoint_to_utf8(type_codept c, it_out_utf8 dst)
-{
-    if (c <= 0x7F)
-    {
-        *dst++ = (type_char8)c;
-    }
-    else if (c <= 0x7FF)
-    {
-        *dst++ = (type_char8)(0xC0 | (c >> 6));
-        *dst++ = (type_char8)(0x80 | (c & 0x3F));
-    }
-    else if (c <= 0xFFFF)
-    {
-        *dst++ = (type_char8)(0xE0 |  (c >> 12));
-        *dst++ = (type_char8)(0x80 | ((c >> 6) & 0x3F));
-        *dst++ = (type_char8)(0x80 |  (c       & 0x3F));
-    }
-    else
-    {
-        *dst++ = (type_char8)(0xF0 |  (c >> 18));
-        *dst++ = (type_char8)(0x80 | ((c >> 12) & 0x3F));
-        *dst++ = (type_char8)(0x80 | ((c >> 6)  & 0x3F));
-        *dst++ = (type_char8)(0x80 |  (c        & 0x3F));
+inline it_out_utf8 codepoint_to_utf8(type_codept c, it_out_utf8 dst) {
+    if (c <= 0x7F) {
+        *dst++ = static_cast<type_char8>(c);
+    } else if (c <= 0x7FF) {
+        *dst++ = static_cast<type_char8>(0xC0 | (c >> 6));
+        *dst++ = static_cast<type_char8>(0x80 | (c & 0x3F));
+    } else if (c <= 0xFFFF) {
+        *dst++ = static_cast<type_char8>(0xE0 | (c >> 12));
+        *dst++ = static_cast<type_char8>(0x80 | ((c >> 6) & 0x3F));
+        *dst++ = static_cast<type_char8>(0x80 | (c & 0x3F));
+    } else {
+        *dst++ = static_cast<type_char8>(0xF0 | (c >> 18));
+        *dst++ = static_cast<type_char8>(0x80 | ((c >> 12) & 0x3F));
+        *dst++ = static_cast<type_char8>(0x80 | ((c >> 6) & 0x3F));
+        *dst++ = static_cast<type_char8>(0x80 | (c & 0x3F));
     }
 
     return dst;
 }
 
-#ifdef __cplusplus
 template<typename it_out_utf16>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_out_utf16 codepoint_to_utf16(type_codept c, it_out_utf16 dst)
-{
-    if (c <= 0xFFFF)
-    {
+inline it_out_utf16 codepoint_to_utf16(type_codept c, it_out_utf16 dst) {
+    if (c <= 0xFFFF) {
         *dst++ = (type_char16)c;
-    }
-    else
-    {
+    } else {
         *dst++ = (type_char16)(0xD7C0 + (c >> 10));
         *dst++ = (type_char16)(0xDC00 + (c & 0x3FF));
     }
@@ -288,86 +242,66 @@ uaix_static it_out_utf16 codepoint_to_utf16(type_codept c, it_out_utf16 dst)
 // Hovewer we have inline versions of these functions for a higher level too
 // they can be used for a critical performance code to guarantee to omit function calls always.
 
-uaix_const type_codept impl_iter_replacement = 0xFFFD; // iter_replacement
-uaix_const type_codept impl_iter_error = 0xFFFFFFFF; // iter_error
+uaix_const type_codept impl_iter_replacement = 0xFFFD;  // iter_replacement
+uaix_const type_codept impl_iter_error = 0xFFFFFFFF;  // iter_error
 
-#ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
-#endif
-uaix_static it_in_utf8 impl_utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
-{
+it_in_utf8 impl_utf8_iter(it_in_utf8 first, it_end_utf8 last,
+                          type_codept* codepoint, type_codept error) {
     return utf8_iter(first, last, codepoint, error);
 }
 
-#ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
-#endif
-uaix_static it_in_utf16 impl_utf16_iter(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
-{
+it_in_utf16 impl_utf16_iter(it_in_utf16 first, it_end_utf16 last,
+                            type_codept* codepoint, type_codept error) {
     return utf16_iter(first, last, codepoint, error);
 }
 
-#ifdef __cplusplus
 template<typename it_in_utf8>
-#endif
-uaix_static it_in_utf8 impl_utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
-{
+it_in_utf8 impl_utf8_iter_rev(it_in_utf8 first, it_in_utf8 last,
+                              type_codept* codepoint, type_codept error) {
     return utf8_iter_rev(first, last, codepoint, error);
 }
 
-#ifdef __cplusplus
 template<typename it_in_utf16>
-#endif
-uaix_static it_in_utf16 impl_utf16_iter_rev(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
-{
+it_in_utf16 impl_utf16_iter_rev(it_in_utf16 first, it_in_utf16 last,
+                                type_codept* codepoint, type_codept error) {
     return utf16_iter_rev(first, last, codepoint, error);
 }
 
 // Inline versions
 
-#ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_in_utf8 inline_utf8_iter(it_in_utf8 first, it_end_utf8 last, type_codept* codepoint, type_codept error)
-{
+inline it_in_utf8 inline_utf8_iter(it_in_utf8 first, it_end_utf8 last,
+                                   type_codept* codepoint, type_codept error) {
     return utf8_iter(first, last, codepoint, error);
 }
 
-#ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_in_utf16 inline_utf16_iter(it_in_utf16 first, it_end_utf16 last, type_codept* codepoint, type_codept error)
-{
+inline it_in_utf16 inline_utf16_iter(it_in_utf16 first, it_end_utf16 last,
+                                     type_codept* codepoint,
+                                     type_codept error) {
     return utf16_iter(first, last, codepoint, error);
 }
 
-#ifdef __cplusplus
 template<typename it_in_utf8>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_in_utf8 inline_utf8_iter_rev(it_in_utf8 first, it_in_utf8 last, type_codept* codepoint, type_codept error)
-{
+inline it_in_utf8 inline_utf8_iter_rev(it_in_utf8 first, it_in_utf8 last,
+                                       type_codept* codepoint,
+                                       type_codept error) {
     return utf8_iter_rev(first, last, codepoint, error);
 }
 
-#ifdef __cplusplus
 template<typename it_in_utf16>
-#endif
-uaix_always_inline_tmpl
-uaix_static it_in_utf16 inline_utf16_iter_rev(it_in_utf16 first, it_in_utf16 last, type_codept* codepoint, type_codept error)
-{
+inline it_in_utf16 inline_utf16_iter_rev(it_in_utf16 first, it_in_utf16 last,
+                                         type_codept* codepoint,
+                                         type_codept error) {
     return utf16_iter_rev(first, last, codepoint, error);
 }
 
 // Output
 
-#ifdef __cplusplus
 template<typename it_out_utf8>
-#endif
-uaix_static it_out_utf8 impl_utf8_output(type_codept c, it_out_utf8 dst)
-{
+it_out_utf8 impl_utf8_output(type_codept c, it_out_utf8 dst) {
     // TODO: try to merge it with the function below can give a bit better performance
     if (c > 0x10FFFF || (c >= 0xD800 && c <= 0xDFFF))
         c = 0xFFFD;
@@ -375,11 +309,8 @@ uaix_static it_out_utf8 impl_utf8_output(type_codept c, it_out_utf8 dst)
     return codepoint_to_utf8(c, dst);
 }
 
-#ifdef __cplusplus
 template<typename it_out_utf16>
-#endif
-uaix_static it_out_utf16 impl_utf16_output(type_codept c, it_out_utf16 dst)
-{
+it_out_utf16 impl_utf16_output(type_codept c, it_out_utf16 dst) {
     // TODO: try to merge it with the function below can give a bit better performance
     if (c > 0x10FFFF || (c >= 0xD800 && c <= 0xDFFF))
         c = 0xFFFD;
@@ -387,11 +318,9 @@ uaix_static it_out_utf16 impl_utf16_output(type_codept c, it_out_utf16 dst)
     return codepoint_to_utf16(c, dst);
 }
 
-UNI_ALGO_IMPL_NAMESPACE_END
+}  // namespace uni::detail
 
 #include <uni/internal/undefs.h>
-
-#endif // IMPL_ITERATOR_H_UAIX
 
 /* Public Domain Contract
  *
