@@ -14,7 +14,7 @@ UNI_ALGO_IMPL_NAMESPACE_BEGIN
 // Note that some data can use stage3 table then stage2 result is index in stage3.
 #ifdef __cplusplus
 template<typename T1, typename T2>
-inline uaix_static type_codept stages(type_codept c, T1 stage1, T2 stage2) {
+inline type_codept stages(type_codept c, T1 stage1, T2 stage2) {
         // If c > 0x10FFFF the behaviour is undefined
         // For stage1/2_special_* tables if c > 0xFFFF the behaviour is undefined
 

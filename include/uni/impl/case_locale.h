@@ -28,7 +28,7 @@ uaix_const int impl_casemap_locale_title_tr_az = 16;
 uaix_const int impl_casemap_locale_title_nl = 17;
 
 template<typename it_in_utf8>
-uaix_static bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src) {
+bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src) {
     /* After_Soft_Dotted special case from Unicode Standard:
      * There is a Soft_Dotted character before C,
      * with no intervening character of combining class 0 or 230 (Above).
@@ -55,7 +55,7 @@ uaix_static bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src) {
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool utf8_more_above(it_in_utf8 src, it_end_utf8 last) {
+bool utf8_more_above(it_in_utf8 src, it_end_utf8 last) {
     /* More_Above special case from Unicode Standard:
      * C is followed by a character of combining class 230 (Above)
      * with no intervening character of combining class 0 or 230 (Above).
@@ -84,7 +84,7 @@ uaix_static bool utf8_more_above(it_in_utf8 src, it_end_utf8 last) {
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8>
 #endif
-uaix_static bool utf8_before_dot(it_in_utf8 src, it_end_utf8 last) {
+bool utf8_before_dot(it_in_utf8 src, it_end_utf8 last) {
     /* Before_Dot special case from Unicode Standard:
      * C is followed by combining dot above (U+0307).
      * Any sequence of characters with a combining class that is neither 0 nor 230
@@ -113,7 +113,7 @@ uaix_static bool utf8_before_dot(it_in_utf8 src, it_end_utf8 last) {
 #ifdef __cplusplus
 template<typename it_in_utf8>
 #endif
-uaix_static bool utf8_after_i(it_in_utf8 first, it_in_utf8 src) {
+bool utf8_after_i(it_in_utf8 first, it_in_utf8 src) {
     /* After_I special case from Unicode Standard:
      * There is an uppercase I before C,
      * and there is no intervening combining character class 230 (Above) or 0.
@@ -144,7 +144,7 @@ uaix_static bool utf8_after_i(it_in_utf8 first, it_in_utf8 src) {
     #ifdef __cplusplus
 template<typename it_in_utf16>
     #endif
-uaix_static bool utf16_after_soft_dotted(it_in_utf16 first, it_in_utf16 src) {
+bool utf16_after_soft_dotted(it_in_utf16 first, it_in_utf16 src) {
     it_in_utf16 s = src;
     type_codept c = 0;
 
@@ -165,7 +165,7 @@ uaix_static bool utf16_after_soft_dotted(it_in_utf16 first, it_in_utf16 src) {
     #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
     #endif
-uaix_static bool utf16_more_above(it_in_utf16 src, it_end_utf16 last) {
+bool utf16_more_above(it_in_utf16 src, it_end_utf16 last) {
     it_in_utf16 s = src;
     type_codept c = 0;
 
@@ -186,7 +186,7 @@ uaix_static bool utf16_more_above(it_in_utf16 src, it_end_utf16 last) {
     #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16>
     #endif
-uaix_static bool utf16_before_dot(it_in_utf16 src, it_end_utf16 last) {
+bool utf16_before_dot(it_in_utf16 src, it_end_utf16 last) {
     it_in_utf16 s = src;
     type_codept c = 0;
 
@@ -208,7 +208,7 @@ uaix_static bool utf16_before_dot(it_in_utf16 src, it_end_utf16 last) {
     #ifdef __cplusplus
 template<typename it_in_utf16>
     #endif
-uaix_static bool utf16_after_i(it_in_utf16 first, it_in_utf16 src) {
+bool utf16_after_i(it_in_utf16 first, it_in_utf16 src) {
     it_in_utf16 s = src;
     type_codept c = 0;
 
@@ -233,7 +233,7 @@ uaix_static bool utf16_after_i(it_in_utf16 first, it_in_utf16 src) {
 #ifdef __cplusplus
 template<typename it_out_utf8, typename it_in_utf8>
 #endif
-inline uaix_static it_out_utf8 utf8_locale_upper_lt(type_codept c,
+inline it_out_utf8 utf8_locale_upper_lt(type_codept c,
                                                     it_out_utf8 dst,
                                                     it_in_utf8 first,
                                                     it_in_utf8 prev) {
@@ -265,7 +265,7 @@ inline uaix_static it_out_utf8 utf8_locale_upper_lt(type_codept c,
 #ifdef __cplusplus
 template<typename it_out_utf8, typename it_in_utf8, typename it_end_utf8>
 #endif
-inline uaix_static it_out_utf8
+inline it_out_utf8
 utf8_locale_lower_lt(type_codept c, it_out_utf8 dst, it_in_utf8 src,
                      it_end_utf8 last, it_in_utf8 first, it_in_utf8 prev) {
     // SpecialCasing.txt # Lithuanian
@@ -343,7 +343,7 @@ utf8_locale_lower_lt(type_codept c, it_out_utf8 dst, it_in_utf8 src,
 #ifdef __cplusplus
 template<typename it_out_utf8>
 #endif
-inline uaix_static it_out_utf8 utf8_locale_upper_tr_az(type_codept c,
+inline it_out_utf8 utf8_locale_upper_tr_az(type_codept c,
                                                        it_out_utf8 dst) {
     // SpecialCasing.txt # Turkish and Azeri
 
@@ -376,7 +376,7 @@ inline uaix_static it_out_utf8 utf8_locale_upper_tr_az(type_codept c,
 #ifdef __cplusplus
 template<typename it_out_utf8, typename it_in_utf8, typename it_end_utf8>
 #endif
-inline uaix_static it_out_utf8
+inline it_out_utf8
 utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst, it_in_utf8 src,
                         it_end_utf8 last, it_in_utf8 first, it_in_utf8 prev) {
     // SpecialCasing.txt # Turkish and Azeri
@@ -423,7 +423,7 @@ utf8_locale_lower_tr_az(type_codept c, it_out_utf8 dst, it_in_utf8 src,
 #ifdef __cplusplus
 template<typename it_out_utf16, typename it_in_utf16>
 #endif
-inline uaix_static it_out_utf16 utf16_locale_upper_lt(type_codept c,
+inline it_out_utf16 utf16_locale_upper_lt(type_codept c,
                                                       it_out_utf16 dst,
                                                       it_in_utf16 first,
                                                       it_in_utf16 prev) {
@@ -455,7 +455,7 @@ inline uaix_static it_out_utf16 utf16_locale_upper_lt(type_codept c,
 #ifdef __cplusplus
 template<typename it_out_utf16, typename it_in_utf16, typename it_end_utf16>
 #endif
-inline uaix_static it_out_utf16
+inline it_out_utf16
 utf16_locale_lower_lt(type_codept c, it_out_utf16 dst, it_in_utf16 src,
                       it_end_utf16 last, it_in_utf16 first, it_in_utf16 prev) {
     // SpecialCasing.txt # Lithuanian
@@ -521,7 +521,7 @@ utf16_locale_lower_lt(type_codept c, it_out_utf16 dst, it_in_utf16 src,
 #ifdef __cplusplus
 template<typename it_out_utf16>
 #endif
-inline uaix_static it_out_utf16 utf16_locale_upper_tr_az(type_codept c,
+inline it_out_utf16 utf16_locale_upper_tr_az(type_codept c,
                                                          it_out_utf16 dst) {
     // SpecialCasing.txt # Turkish and Azeri
 
@@ -553,7 +553,7 @@ inline uaix_static it_out_utf16 utf16_locale_upper_tr_az(type_codept c,
 #ifdef __cplusplus
 template<typename it_out_utf16, typename it_in_utf16, typename it_end_utf16>
 #endif
-inline uaix_static it_out_utf16 utf16_locale_lower_tr_az(
+inline it_out_utf16 utf16_locale_lower_tr_az(
     type_codept c, it_out_utf16 dst, it_in_utf16 src, it_end_utf16 last,
     it_in_utf16 first, it_in_utf16 prev) {
     // SpecialCasing.txt # Turkish and Azeri
@@ -1067,7 +1067,7 @@ uaix_always_inline
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last,
+size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last,
                                  it_out_utf8 result) {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
@@ -1116,7 +1116,7 @@ uaix_static size_t utf8_upper_el(it_in_utf8 first, it_end_utf8 last,
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last,
+size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last,
                                   it_out_utf16 result) {
     it_in_utf16 src = first;
     it_out_utf16 dst = result;
@@ -1166,7 +1166,7 @@ uaix_static size_t utf16_upper_el(it_in_utf16 first, it_end_utf16 last,
     #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
     #endif
-uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last,
+size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last,
                                      it_out_utf8 result, int locale) {
     // The function is the same as utf8_title except LOCALE BEGIN - LOCALE END parts
 
@@ -1294,7 +1294,7 @@ uaix_static size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last,
     #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
     #endif
-uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
+size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
                                       it_out_utf16 result, int locale) {
     // The function is the same as utf16_title except LOCALE BEGIN - LOCALE END parts
 
@@ -1421,7 +1421,7 @@ uaix_static size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
 #ifdef __cplusplus
 template<typename it_in_utf8, typename it_end_utf8, typename it_out_utf8>
 #endif
-uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
+size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
                                             it_out_utf8 result, int locale) {
     it_in_utf8 src = first;
     it_out_utf8 dst = result;
@@ -1477,7 +1477,7 @@ uaix_static size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
 #ifdef __cplusplus
 template<typename it_in_utf16, typename it_end_utf16, typename it_out_utf16>
 #endif
-uaix_static size_t impl_utf16_casemap_locale(it_in_utf16 first,
+size_t impl_utf16_casemap_locale(it_in_utf16 first,
                                              it_end_utf16 last,
                                              it_out_utf16 result, int locale) {
     it_in_utf16 src = first;

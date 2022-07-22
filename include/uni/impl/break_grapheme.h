@@ -3,59 +3,54 @@
  * See notice at the end of this file. */
 
 #ifndef IMPL_BREAK_GRAPHEME_H_UAIX
-#define IMPL_BREAK_GRAPHEME_H_UAIX
+    #define IMPL_BREAK_GRAPHEME_H_UAIX
 
-#include <uni/impl/iterator.h>
+    #include <uni/impl/iterator.h>
+    #include <uni/internal/defines.h>
+    #include <uni/internal/stages.h>
 
-#include <uni/internal/defines.h>
-#include <uni/internal/stages.h>
-
-#ifndef UNI_ALGO_STATIC_DATA
-#include <uni/impl/break_grapheme_data_extern.h>
-#endif
+    #ifndef UNI_ALGO_STATIC_DATA
+        #include <uni/impl/break_grapheme_data_extern.h>
+    #endif
 
 UNI_ALGO_IMPL_NAMESPACE_BEGIN
 
 // See generator_break_grapheme in gen/gen.h
 
-uaix_const type_codept prop_GB_Prepend               = 1;
-uaix_const type_codept prop_GB_CR                    = 2;
-uaix_const type_codept prop_GB_LF                    = 3;
-uaix_const type_codept prop_GB_Control               = 4;
-uaix_const type_codept prop_GB_Extend                = 5;
-uaix_const type_codept prop_GB_Regional_Indicator    = 6;
-uaix_const type_codept prop_GB_SpacingMark           = 7;
-uaix_const type_codept prop_GB_L                     = 8;
-uaix_const type_codept prop_GB_V                     = 9;
-uaix_const type_codept prop_GB_T                     = 10;
-uaix_const type_codept prop_GB_LV                    = 11;
-uaix_const type_codept prop_GB_LVT                   = 12;
-uaix_const type_codept prop_GB_ZWJ                   = 13;
+uaix_const type_codept prop_GB_Prepend = 1;
+uaix_const type_codept prop_GB_CR = 2;
+uaix_const type_codept prop_GB_LF = 3;
+uaix_const type_codept prop_GB_Control = 4;
+uaix_const type_codept prop_GB_Extend = 5;
+uaix_const type_codept prop_GB_Regional_Indicator = 6;
+uaix_const type_codept prop_GB_SpacingMark = 7;
+uaix_const type_codept prop_GB_L = 8;
+uaix_const type_codept prop_GB_V = 9;
+uaix_const type_codept prop_GB_T = 10;
+uaix_const type_codept prop_GB_LV = 11;
+uaix_const type_codept prop_GB_LVT = 12;
+uaix_const type_codept prop_GB_ZWJ = 13;
 uaix_const type_codept prop_GB_Extended_Pictographic = 14;
 
-uaix_const int state_break_grapheme_begin    = 0;
-uaix_const int state_break_grapheme_process  = 1;
-uaix_const int state_break_grapheme_EP       = 2;
-uaix_const int state_break_grapheme_EP_ZWJ   = 3;
-uaix_const int state_break_grapheme_RI       = 4;
-uaix_const int state_break_grapheme_RI_RI    = 5;
+uaix_const int state_break_grapheme_begin = 0;
+uaix_const int state_break_grapheme_process = 1;
+uaix_const int state_break_grapheme_EP = 2;
+uaix_const int state_break_grapheme_EP_ZWJ = 3;
+uaix_const int state_break_grapheme_RI = 4;
+uaix_const int state_break_grapheme_RI_RI = 5;
 
-uaix_always_inline
-uaix_static type_codept stages_break_grapheme_prop(type_codept c)
-{
+uaix_always_inline type_codept stages_break_grapheme_prop(type_codept c) {
     return stages(c, stage1_break_grapheme, stage2_break_grapheme);
 }
 
-struct impl_break_grapheme_state
-{
+struct impl_break_grapheme_state {
     type_codept prev_cp;
     type_codept prev_cp_prop;
     int state;
 };
 
-uaix_always_inline
-uaix_static void impl_break_grapheme_state_reset(struct impl_break_grapheme_state* state)
-{
+uaix_always_inline void
+impl_break_grapheme_state_reset(struct impl_break_grapheme_state* state) {
     state->prev_cp = 0;
     state->prev_cp_prop = 0;
     state->state = state_break_grapheme_begin;
@@ -64,7 +59,7 @@ uaix_static void impl_break_grapheme_state_reset(struct impl_break_grapheme_stat
 // TODO: see TODO below.
 // Extend_ExtCccZwj and ZWJ_ExtCccZwj should not be used.
 // ZWJ must be the same as Extend.
-uaix_static const bool break_table_grapheme[15][15] =
+const bool break_table_grapheme[15][15] =
 {
 //   Oth CR LF Con Ext RI Pre SpM L  V  T  LV LVT EP ZWJ
     {1,  1, 1, 1,  0,  1, 1,  0,  1, 1, 1, 1, 1,  1, 0}, // Other
@@ -84,9 +79,8 @@ uaix_static const bool break_table_grapheme[15][15] =
     {1,  1, 1, 1,  0,  1, 1,  0,  1, 1, 1, 1, 1,  1, 0}, // ZWJ
 };
 */
-uaix_always_inline
-uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_codept c)
-{
+uaix_always_inline bool break_grapheme(struct impl_break_grapheme_state* state,
+                                       type_codept c) {
     // TODO: https://unicode.org/reports/tr29/#State_Machines
     // ftp://ftp.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.html
     // See state table above.
@@ -102,34 +96,41 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_co
 
     if (state->state == state_break_grapheme_begin)
         state->state = state_break_grapheme_process;
-    else if (p_prop == prop_GB_CR && c_prop == prop_GB_LF) // GB3
-        result = false; // NOLINT
-    else if (p_prop == prop_GB_Control || p_prop == prop_GB_CR || p_prop == prop_GB_LF) // GB4
-        result = true; // NOLINT
-    else if (c_prop == prop_GB_Control || c_prop == prop_GB_CR || c_prop == prop_GB_LF) // GB5
-        result = true; // NOLINT
-    else if (p_prop == prop_GB_L && (c_prop == prop_GB_L || c_prop == prop_GB_V || c_prop == prop_GB_LV || c_prop == prop_GB_LVT)) // GB6
-        result = false; // NOLINT
-    else if ((p_prop == prop_GB_LV || p_prop == prop_GB_V) && (c_prop == prop_GB_V || c_prop == prop_GB_T)) // GB7
-        result = false; // NOLINT
-    else if ((p_prop == prop_GB_LVT || p_prop == prop_GB_T) && c_prop == prop_GB_T) // GB8
-        result = false; // NOLINT
-    else if (c_prop == prop_GB_Extend || c_prop == prop_GB_ZWJ) // GB9
-        result = false; // NOLINT
-    else if (c_prop == prop_GB_SpacingMark) // GB9a
-        result = false; // NOLINT
-    else if (p_prop == prop_GB_Prepend) // GB9b
-        result = false; // NOLINT
-    else if (state->state == state_break_grapheme_EP_ZWJ && c_prop == prop_GB_Extended_Pictographic) // GB11
-        result = false; // NOLINT
-    else if (state->state == state_break_grapheme_RI && c_prop == prop_GB_Regional_Indicator) // GB12/GB13
-        result = false; // NOLINT
-    else // GB999
-        result = true; // NOLINT
+    else if (p_prop == prop_GB_CR && c_prop == prop_GB_LF)  // GB3
+        result = false;  // NOLINT
+    else if (p_prop == prop_GB_Control || p_prop == prop_GB_CR
+             || p_prop == prop_GB_LF)  // GB4
+        result = true;  // NOLINT
+    else if (c_prop == prop_GB_Control || c_prop == prop_GB_CR
+             || c_prop == prop_GB_LF)  // GB5
+        result = true;  // NOLINT
+    else if (p_prop == prop_GB_L
+             && (c_prop == prop_GB_L || c_prop == prop_GB_V
+                 || c_prop == prop_GB_LV || c_prop == prop_GB_LVT))  // GB6
+        result = false;  // NOLINT
+    else if ((p_prop == prop_GB_LV || p_prop == prop_GB_V)
+             && (c_prop == prop_GB_V || c_prop == prop_GB_T))  // GB7
+        result = false;  // NOLINT
+    else if ((p_prop == prop_GB_LVT || p_prop == prop_GB_T)
+             && c_prop == prop_GB_T)  // GB8
+        result = false;  // NOLINT
+    else if (c_prop == prop_GB_Extend || c_prop == prop_GB_ZWJ)  // GB9
+        result = false;  // NOLINT
+    else if (c_prop == prop_GB_SpacingMark)  // GB9a
+        result = false;  // NOLINT
+    else if (p_prop == prop_GB_Prepend)  // GB9b
+        result = false;  // NOLINT
+    else if (state->state == state_break_grapheme_EP_ZWJ
+             && c_prop == prop_GB_Extended_Pictographic)  // GB11
+        result = false;  // NOLINT
+    else if (state->state == state_break_grapheme_RI
+             && c_prop == prop_GB_Regional_Indicator)  // GB12/GB13
+        result = false;  // NOLINT
+    else  // GB999
+        result = true;  // NOLINT
 
     // GB12/GB13
-    if (c_prop == prop_GB_Regional_Indicator)
-    {
+    if (c_prop == prop_GB_Regional_Indicator) {
         if (state->state == state_break_grapheme_RI)
             state->state = state_break_grapheme_RI_RI;
         else
@@ -137,9 +138,10 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_co
     }
     // GB11
     else if (c_prop == prop_GB_Extended_Pictographic)
-        state->state = state_break_grapheme_EP; // NOLINT
-    else if (state->state == state_break_grapheme_EP && c_prop == prop_GB_Extend)
-        state->state = state_break_grapheme_EP; // NOLINT
+        state->state = state_break_grapheme_EP;  // NOLINT
+    else if (state->state == state_break_grapheme_EP
+             && c_prop == prop_GB_Extend)
+        state->state = state_break_grapheme_EP;  // NOLINT
     else if (state->state == state_break_grapheme_EP && c_prop == prop_GB_ZWJ)
         state->state = state_break_grapheme_EP_ZWJ;
     else
@@ -151,25 +153,26 @@ uaix_static bool break_grapheme(struct impl_break_grapheme_state* state, type_co
     return result;
 }
 
-#ifdef __cplusplus
-template<typename = void> // TODO: What is this? Why uaix_inline is not used here instead of this crap?
-#endif
-uaix_static bool impl_break_grapheme(struct impl_break_grapheme_state* state, type_codept c)
-{
+    #ifdef __cplusplus
+template<
+    typename =
+        void>  // TODO: What is this? Why uaix_inline is not used here instead of this crap?
+    #endif
+bool impl_break_grapheme(struct impl_break_grapheme_state* state,
+                         type_codept c) {
     return break_grapheme(state, c);
 }
 
-uaix_always_inline
-uaix_static bool inline_break_grapheme(struct impl_break_grapheme_state* state, type_codept c)
-{
+uaix_always_inline bool
+inline_break_grapheme(struct impl_break_grapheme_state* state, type_codept c) {
     return break_grapheme(state, c);
 }
 
 UNI_ALGO_IMPL_NAMESPACE_END
 
-#include <uni/internal/undefs.h>
+    #include <uni/internal/undefs.h>
 
-#endif // IMPL_BREAK_GRAPHEME_H_UAIX
+#endif  // IMPL_BREAK_GRAPHEME_H_UAIX
 
 /* Public Domain Contract
  *

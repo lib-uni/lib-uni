@@ -10,7 +10,6 @@
 #undef uaix_always_inline_tmpl
 #undef uaix_likely
 #undef uaix_unlikely
-#undef uaix_static
 #undef uaix_inline
 #undef uaix_const
 #undef uaix_const_data
