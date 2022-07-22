@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cstddef>
+#include <type_traits>
 
 // UNI_ALGO_CPP_LIB_VERSION
 // Describes the library version number in XYYYZZZ format such that:
@@ -93,10 +94,10 @@ inline constexpr std::nullptr_t impl_nullptr = nullptr;
 static_assert(
     std::is_unsigned_v<type_codept> && sizeof(type_codept) >= sizeof(char32_t));
 static_assert(std::is_unsigned_v<type_char8>);
-static_assert(std::is_unsigned_v<type_char16>
-              && sizeof(type_char16) >= sizeof(char16_t));
-static_assert(std::is_unsigned_v<type_char32>
-              && sizeof(type_char32) >= sizeof(char32_t));
+static_assert(
+    std::is_unsigned_v<type_char16> && sizeof(type_char16) >= sizeof(char16_t));
+static_assert(
+    std::is_unsigned_v<type_char32> && sizeof(type_char32) >= sizeof(char32_t));
 // Note that the the library supports CHAR_BIT more than 8-bit perfectly fine.
 // Such platforms are rare so it is just mentioned here.
 //static_assert(std::numeric_limits<unsigned char>::max() >= 255); // Always true
