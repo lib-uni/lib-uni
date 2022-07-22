@@ -2,42 +2,41 @@
  * License: Public Domain or MIT - sign whatever you want.
  * See notice at the end of this file. */
 
-#ifndef IMPL_BREAK_GRAPHEME_H_UAIX
-    #define IMPL_BREAK_GRAPHEME_H_UAIX
+#pragma once
 
-    #include <uni/impl/iterator.h>
-    #include <uni/internal/defines.h>
-    #include <uni/internal/stages.h>
+#include <uni/impl/iterator.h>
+#include <uni/internal/defines.h>
+#include <uni/internal/stages.h>
 
-    #ifndef UNI_ALGO_STATIC_DATA
-        #include <uni/impl/break_grapheme_data_extern.h>
-    #endif
+#ifndef UNI_ALGO_STATIC_DATA
+    #include <uni/impl/break_grapheme_data_extern.h>
+#endif
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
+namespace uni::detail {
 
 // See generator_break_grapheme in gen/gen.h
 
-uaix_const type_codept prop_GB_Prepend = 1;
-uaix_const type_codept prop_GB_CR = 2;
-uaix_const type_codept prop_GB_LF = 3;
-uaix_const type_codept prop_GB_Control = 4;
-uaix_const type_codept prop_GB_Extend = 5;
-uaix_const type_codept prop_GB_Regional_Indicator = 6;
-uaix_const type_codept prop_GB_SpacingMark = 7;
-uaix_const type_codept prop_GB_L = 8;
-uaix_const type_codept prop_GB_V = 9;
-uaix_const type_codept prop_GB_T = 10;
-uaix_const type_codept prop_GB_LV = 11;
-uaix_const type_codept prop_GB_LVT = 12;
-uaix_const type_codept prop_GB_ZWJ = 13;
-uaix_const type_codept prop_GB_Extended_Pictographic = 14;
+inline constexpr type_codept prop_GB_Prepend = 1;
+inline constexpr type_codept prop_GB_CR = 2;
+inline constexpr type_codept prop_GB_LF = 3;
+inline constexpr type_codept prop_GB_Control = 4;
+inline constexpr type_codept prop_GB_Extend = 5;
+inline constexpr type_codept prop_GB_Regional_Indicator = 6;
+inline constexpr type_codept prop_GB_SpacingMark = 7;
+inline constexpr type_codept prop_GB_L = 8;
+inline constexpr type_codept prop_GB_V = 9;
+inline constexpr type_codept prop_GB_T = 10;
+inline constexpr type_codept prop_GB_LV = 11;
+inline constexpr type_codept prop_GB_LVT = 12;
+inline constexpr type_codept prop_GB_ZWJ = 13;
+inline constexpr type_codept prop_GB_Extended_Pictographic = 14;
 
-uaix_const int state_break_grapheme_begin = 0;
-uaix_const int state_break_grapheme_process = 1;
-uaix_const int state_break_grapheme_EP = 2;
-uaix_const int state_break_grapheme_EP_ZWJ = 3;
-uaix_const int state_break_grapheme_RI = 4;
-uaix_const int state_break_grapheme_RI_RI = 5;
+inline constexpr int state_break_grapheme_begin = 0;
+inline constexpr int state_break_grapheme_process = 1;
+inline constexpr int state_break_grapheme_EP = 2;
+inline constexpr int state_break_grapheme_EP_ZWJ = 3;
+inline constexpr int state_break_grapheme_RI = 4;
+inline constexpr int state_break_grapheme_RI_RI = 5;
 
 inline type_codept stages_break_grapheme_prop(type_codept c) {
     return stages(c, stage1_break_grapheme, stage2_break_grapheme);
@@ -153,11 +152,11 @@ inline bool break_grapheme(struct impl_break_grapheme_state* state,
     return result;
 }
 
-    #ifdef __cplusplus
+#ifdef __cplusplus
 template<
     typename =
         void>  // TODO: What is this? Why uaix_inline is not used here instead of this crap?
-    #endif
+#endif
 bool impl_break_grapheme(struct impl_break_grapheme_state* state,
                          type_codept c) {
     return break_grapheme(state, c);
@@ -168,11 +167,9 @@ inline bool inline_break_grapheme(struct impl_break_grapheme_state* state,
     return break_grapheme(state, c);
 }
 
-UNI_ALGO_IMPL_NAMESPACE_END
+}  // namespace uni::detail
 
-    #include <uni/internal/undefs.h>
-
-#endif  // IMPL_BREAK_GRAPHEME_H_UAIX
+#include <uni/internal/undefs.h>
 
 /* Public Domain Contract
  *

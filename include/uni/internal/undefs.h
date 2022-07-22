@@ -8,8 +8,6 @@
 
 #undef uaix_likely
 #undef uaix_unlikely
-#undef uaix_const
-#undef uaix_const_data
 
 #ifdef __cplusplus
     #if defined(__GNUC__) || defined(__clang__)

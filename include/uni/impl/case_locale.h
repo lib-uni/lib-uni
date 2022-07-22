@@ -15,17 +15,17 @@
     #error "The file cannot be used if full case mapping is disabled"
 #endif
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
+namespace uni::detail {
 
-//uaix_const int impl_casemap_locale_null      = 0;
-uaix_const int impl_casemap_locale_lower_lt = 10;
-uaix_const int impl_casemap_locale_lower_tr_az = 11;
-uaix_const int impl_casemap_locale_upper_lt = 12;
-uaix_const int impl_casemap_locale_upper_tr_az = 13;
-uaix_const int impl_casemap_locale_upper_el = 14;
-uaix_const int impl_casemap_locale_title_lt = 15;
-uaix_const int impl_casemap_locale_title_tr_az = 16;
-uaix_const int impl_casemap_locale_title_nl = 17;
+//inline constexpr int impl_casemap_locale_null      = 0;
+inline constexpr int impl_casemap_locale_lower_lt = 10;
+inline constexpr int impl_casemap_locale_lower_tr_az = 11;
+inline constexpr int impl_casemap_locale_upper_lt = 12;
+inline constexpr int impl_casemap_locale_upper_tr_az = 13;
+inline constexpr int impl_casemap_locale_upper_el = 14;
+inline constexpr int impl_casemap_locale_title_lt = 15;
+inline constexpr int impl_casemap_locale_title_tr_az = 16;
+inline constexpr int impl_casemap_locale_title_nl = 17;
 
 template<typename it_in_utf8>
 bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src) {
@@ -1524,7 +1524,7 @@ size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last,
     return (size_t)(dst - result);
 }
 
-UNI_ALGO_IMPL_NAMESPACE_END
+}  // namespace uni::detail
 
 #include <uni/internal/undefs.h>
 

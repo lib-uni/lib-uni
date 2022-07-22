@@ -8,7 +8,6 @@
 
 // The internal defines are lowercased because they make too much noise in the code if uppercased.
 
-
 // Must not be used without performance testing it can degrade performance in many cases
 #if defined(__GNUC__) || defined(__clang__)
     #define uaix_likely(x) __builtin_expect(!!(x), 1)
@@ -18,16 +17,6 @@
     #define uaix_unlikely(x) (!!(x))
 #endif
 
-// FIX: delete below
-#define uaix_const inline constexpr
-
-// The define can be used to switch Unicode data to static (constexpr in C++) mode
-// uaix_const_data is only used by generated Unicode data files
-#ifdef UNI_ALGO_STATIC_DATA
-    #define uaix_const_data uaix_const
-#else
-    #define uaix_const_data const
-#endif
 
 // FIX: delete below
 #ifdef __cplusplus

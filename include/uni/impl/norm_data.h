@@ -1,10 +1,8 @@
 // Unicode 14.0.0
 
-#include <uni/internal/defines.h>
+namespace uni::detail {
 
-UNI_ALGO_IMPL_NAMESPACE_BEGIN
-
-uaix_const_data unsigned char stage1_ccc_qc[] = {
+inline constexpr unsigned char stage1_ccc_qc[] = {
 0,1,2,3,4,5,6,7,
 8,9,0,10,11,12,13,14,
 15,16,17,18,19,20,21,22,
@@ -1094,7 +1092,7 @@ uaix_const_data unsigned char stage1_ccc_qc[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage2_ccc_qc[] = {
+inline constexpr unsigned short stage2_ccc_qc[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -3731,7 +3729,7 @@ uaix_const_data unsigned short stage2_ccc_qc[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage1_decomp_nfd[] = {
+inline constexpr unsigned char stage1_decomp_nfd[] = {
 0,1,2,3,4,0,5,6,
 7,8,0,0,9,10,0,0,
 0,0,11,12,13,0,14,15,
@@ -4821,7 +4819,7 @@ uaix_const_data unsigned char stage1_decomp_nfd[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage2_decomp_nfd[] = {
+inline constexpr unsigned short stage2_decomp_nfd[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -5758,7 +5756,7 @@ uaix_const_data unsigned short stage2_decomp_nfd[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data type_codept stage3_decomp_nfd[] = {
+inline constexpr type_codept stage3_decomp_nfd[] = {
 0,2,65,768,2,65,769,2,
 65,770,2,65,771,2,65,776,
 2,65,778,2,67,807,2,69,
@@ -6446,7 +6444,7 @@ uaix_const_data type_codept stage3_decomp_nfd[] = {
 
 #ifndef UNI_ALGO_DISABLE_NFKC_NFKD
 
-uaix_const_data unsigned char stage1_decomp_nfkd[] = {
+inline constexpr unsigned char stage1_decomp_nfkd[] = {
 0,1,2,3,4,5,6,7,
 8,9,0,10,11,12,0,0,
 0,0,13,14,15,0,16,17,
@@ -7536,7 +7534,7 @@ uaix_const_data unsigned char stage1_decomp_nfkd[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage2_decomp_nfkd[] = {
+inline constexpr unsigned short stage2_decomp_nfkd[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -9323,7 +9321,7 @@ uaix_const_data unsigned short stage2_decomp_nfkd[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data type_codept stage3_decomp_nfkd[] = {
+inline constexpr type_codept stage3_decomp_nfkd[] = {
 0,1,32,2,32,776,1,97,
 2,32,772,1,50,1,51,2,
 32,769,1,956,2,32,807,1,
@@ -11185,7 +11183,7 @@ uaix_const_data type_codept stage3_decomp_nfkd[] = {
 
 #ifndef UNI_ALGO_DISABLE_UNACCENT
 
-uaix_const_data unsigned char stage1_norm_mn[] = {
+inline constexpr unsigned char stage1_norm_mn[] = {
 0,0,0,0,0,0,1,0,
 0,2,0,3,4,5,6,7,
 8,9,10,11,12,13,14,15,
@@ -12275,7 +12273,7 @@ uaix_const_data unsigned char stage1_norm_mn[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_norm_mn[] = {
+inline constexpr unsigned char stage2_norm_mn[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -14047,7 +14045,7 @@ uaix_const_data unsigned char stage2_norm_mn[] = {
 
 #endif // UNI_ALGO_DISABLE_UNACCENT
 
-uaix_const_data unsigned char stage1_comp_cp1[] = {
+inline constexpr unsigned char stage1_comp_cp1[] = {
 0,1,2,3,4,5,6,7,
 8,9,6,6,10,11,6,6,
 6,6,12,13,6,6,14,15,
@@ -15137,7 +15135,7 @@ uaix_const_data unsigned char stage1_comp_cp1[] = {
 6,6,6,6,6,6,6,6,
 6,6,6,6,6,6,6,6};
 
-uaix_const_data unsigned short stage2_comp_cp1[] = {
+inline constexpr unsigned short stage2_comp_cp1[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -15768,7 +15766,7 @@ uaix_const_data unsigned short stage2_comp_cp1[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage1_comp_cp2[] = {
+inline constexpr unsigned char stage1_comp_cp2[] = {
 0,0,0,0,0,0,1,0,
 0,0,0,0,2,0,0,0,
 0,0,3,4,0,0,5,6,
@@ -16858,7 +16856,7 @@ uaix_const_data unsigned char stage1_comp_cp2[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage2_comp_cp2[] = {
+inline constexpr unsigned short stage2_comp_cp2[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17200,7 +17198,7 @@ uaix_const_data unsigned short stage2_comp_cp2[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data type_codept stage3_comp[][64] = {
+inline constexpr type_codept stage3_comp[][64] = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,192,193,194,195,196,197,0,256,258,260,550,461,0,0,512,514,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7680,7840,0,0,0,0,0,7842,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,262,264,0,0,0,199,0,0,0,266,268,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -17580,6 +17578,5 @@ uaix_const_data type_codept stage3_comp[][64] = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71099,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71992}};
 
-UNI_ALGO_IMPL_NAMESPACE_END
+}
 
-#include <uni/internal/undefs.h>

@@ -4,16 +4,18 @@
 
 #pragma once
 
-#include <type_traits>
-
 #include <uni/config.h>
 #include <uni/internal/defines.h>
 
+#include <type_traits>
+
 namespace uni::detail {
-uaix_const type_codept iter_replacement =
-    0xFFFD;  // REPLACEMENT CHARACTER (U+FFFD)
-uaix_const type_codept iter_error =
-    0xFFFFFFFF;  // Any number outside Unicode range is fine
+
+// REPLACEMENT CHARACTER (U+FFFD)
+inline constexpr type_codept iter_replacement = 0xFFFD;
+
+// Any number outside Unicode range is fine
+inline constexpr type_codept iter_error = 0xFFFFFFFF;
 
 template<typename it_in_utf8, typename it_end_utf8>
 inline it_in_utf8 utf8_iter(it_in_utf8 first, it_end_utf8 last,
@@ -242,8 +244,9 @@ inline it_out_utf16 codepoint_to_utf16(type_codept c, it_out_utf16 dst) {
 // Hovewer we have inline versions of these functions for a higher level too
 // they can be used for a critical performance code to guarantee to omit function calls always.
 
-uaix_const type_codept impl_iter_replacement = 0xFFFD;  // iter_replacement
-uaix_const type_codept impl_iter_error = 0xFFFFFFFF;  // iter_error
+inline constexpr type_codept impl_iter_replacement =
+    0xFFFD;  // iter_replacement
+inline constexpr type_codept impl_iter_error = 0xFFFFFFFF;  // iter_error
 
 template<typename it_in_utf8, typename it_end_utf8>
 it_in_utf8 impl_utf8_iter(it_in_utf8 first, it_end_utf8 last,

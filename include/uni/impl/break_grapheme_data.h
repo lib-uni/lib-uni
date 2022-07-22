@@ -1,10 +1,8 @@
 // Unicode 14.0.0
 
-#include <uni/internal/defines.h>
-
 namespace uni::detail {
 
-uaix_const_data unsigned char stage1_break_grapheme[] = {
+inline constexpr unsigned char stage1_break_grapheme[] = {
 0,1,2,2,2,2,3,2,
 2,4,2,5,6,7,8,9,
 10,11,12,13,14,15,16,17,
@@ -1094,7 +1092,7 @@ uaix_const_data unsigned char stage1_break_grapheme[] = {
 2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2};
 
-uaix_const_data unsigned char stage2_break_grapheme[] = {
+inline constexpr unsigned char stage2_break_grapheme[] = {
 /* Block: 0 */
 4,4,4,4,4,4,4,4,
 4,4,3,4,4,2,4,4,
@@ -3630,5 +3628,3 @@ uaix_const_data unsigned char stage2_break_grapheme[] = {
 4,4,4,4,4,4,4,4};
 
 }
-
-#include <uni/internal/undefs.h>

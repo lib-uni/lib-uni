@@ -1,10 +1,8 @@
 // Unicode 14.0.0
 
-#include <uni/internal/defines.h>
-
 namespace uni::detail {
 
-uaix_const_data unsigned char stage1_lower[] = {
+inline constexpr unsigned char stage1_lower[] = {
 0,1,2,3,4,5,6,7,
 8,9,10,5,5,5,5,5,
 5,5,5,5,5,5,5,5,
@@ -1094,7 +1092,7 @@ uaix_const_data unsigned char stage1_lower[] = {
 5,5,5,5,5,5,5,5,
 5,5,5,5,5,5,5,5};
 
-uaix_const_data type_codept stage2_lower[] = {
+inline constexpr type_codept stage2_lower[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -1708,7 +1706,7 @@ uaix_const_data type_codept stage2_lower[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage1_upper[] = {
+inline constexpr unsigned char stage1_upper[] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,12,12,12,
 12,12,12,12,12,12,12,12,
@@ -2798,7 +2796,7 @@ uaix_const_data unsigned char stage1_upper[] = {
 12,12,12,12,12,12,12,12,
 12,12,12,12,12,12,12,12};
 
-uaix_const_data type_codept stage2_upper[] = {
+inline constexpr type_codept stage2_upper[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -3514,7 +3512,7 @@ uaix_const_data type_codept stage2_upper[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage1_fold[] = {
+inline constexpr unsigned char stage1_fold[] = {
 0,1,2,3,4,5,6,7,
 8,9,10,5,5,5,5,5,
 5,5,5,5,5,5,5,5,
@@ -4604,7 +4602,7 @@ uaix_const_data unsigned char stage1_fold[] = {
 5,5,5,5,5,5,5,5,
 5,5,5,5,5,5,5,5};
 
-uaix_const_data type_codept stage2_fold[] = {
+inline constexpr type_codept stage2_fold[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -5254,7 +5252,7 @@ uaix_const_data type_codept stage2_fold[] = {
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 
-uaix_const_data unsigned char stage1_title[] = {
+inline constexpr unsigned char stage1_title[] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,12,12,12,
 12,12,12,12,12,12,12,12,
@@ -6344,7 +6342,7 @@ uaix_const_data unsigned char stage1_title[] = {
 12,12,12,12,12,12,12,12,
 12,12,12,12,12,12,12,12};
 
-uaix_const_data type_codept stage2_title[] = {
+inline constexpr type_codept stage2_title[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -7047,7 +7045,7 @@ uaix_const_data type_codept stage2_title[] = {
 
 #ifndef UNI_ALGO_DISABLE_COLLATE
 
-uaix_const_data unsigned short stage1_order[] = {
+inline constexpr unsigned short stage1_order[] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,13,14,15,
 16,17,18,19,20,21,22,23,
@@ -8137,7 +8135,7 @@ uaix_const_data unsigned short stage1_order[] = {
 104,104,104,104,104,104,104,104,
 104,104,104,104,104,104,104,104};
 
-uaix_const_data unsigned short stage2_order[] = {
+inline constexpr unsigned short stage2_order[] = {
 /* Block: 0 */
 1,2,3,4,5,6,7,8,
 9,466,467,468,469,470,10,11,
@@ -13428,7 +13426,7 @@ uaix_const_data unsigned short stage2_order[] = {
 
 #endif // UNI_ALGO_DISABLE_COLLATE
 
-uaix_const_data unsigned char stage1_case_prop[] = {
+inline constexpr unsigned char stage1_case_prop[] = {
 0,1,2,3,4,5,6,7,
 8,9,10,11,12,13,14,15,
 16,17,18,19,20,21,22,23,
@@ -14518,7 +14516,7 @@ uaix_const_data unsigned char stage1_case_prop[] = {
 34,34,34,34,34,34,34,34,
 34,34,34,34,34,34,34,34};
 
-uaix_const_data unsigned char stage2_case_prop[] = {
+inline constexpr unsigned char stage2_case_prop[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17225,7 +17223,7 @@ uaix_const_data unsigned char stage2_case_prop[] = {
 
 #ifndef UNI_ALGO_DISABLE_FULL_CASE
 
-uaix_const_data unsigned char stage1_special_upper[] = {
+inline constexpr unsigned char stage1_special_upper[] = {
 0,1,2,3,0,0,0,4,
 0,0,0,5,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17291,7 +17289,7 @@ uaix_const_data unsigned char stage1_special_upper[] = {
 0,0,0,0,0,0,9,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_special_upper[] = {
+inline constexpr unsigned char stage2_special_upper[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17463,7 +17461,7 @@ uaix_const_data unsigned char stage2_special_upper[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage3_special_upper[][4] = {
+inline constexpr unsigned short stage3_special_upper[][4] = {
 {0,0,0,0},
 {2,83,83,0},
 {2,70,70,0},
@@ -17568,7 +17566,7 @@ uaix_const_data unsigned short stage3_special_upper[][4] = {
 {3,919,834,921},
 {3,937,834,921}};
 
-uaix_const_data unsigned char stage1_special_fold[] = {
+inline constexpr unsigned char stage1_special_fold[] = {
 0,1,2,3,0,0,0,4,
 0,0,0,5,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17634,7 +17632,7 @@ uaix_const_data unsigned char stage1_special_fold[] = {
 0,0,0,0,0,0,9,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_special_fold[] = {
+inline constexpr unsigned char stage2_special_fold[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17806,7 +17804,7 @@ uaix_const_data unsigned char stage2_special_fold[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage3_special_fold[][4] = {
+inline constexpr unsigned short stage3_special_fold[][4] = {
 {0,0,0,0},
 {2,115,115,0},
 {2,105,775,0},
@@ -17915,7 +17913,7 @@ uaix_const_data unsigned short stage3_special_fold[][4] = {
 
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
 
-uaix_const_data unsigned char stage1_special_title[] = {
+inline constexpr unsigned char stage1_special_title[] = {
 0,1,2,3,0,0,0,4,
 0,0,0,5,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -17981,7 +17979,7 @@ uaix_const_data unsigned char stage1_special_title[] = {
 0,0,0,0,0,0,9,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_special_title[] = {
+inline constexpr unsigned char stage2_special_title[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -18153,7 +18151,7 @@ uaix_const_data unsigned char stage2_special_title[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage3_special_title[][4] = {
+inline constexpr unsigned short stage3_special_title[][4] = {
 {0,0,0,0},
 {2,83,115,0},
 {2,70,102,0},
@@ -18209,7 +18207,7 @@ uaix_const_data unsigned short stage3_special_title[][4] = {
 // This is handled in place
 #if 0
 
-uaix_const_data unsigned char stage1_special_lower[] = {
+inline constexpr unsigned char stage1_special_lower[] = {
 0,0,1,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -18275,7 +18273,7 @@ uaix_const_data unsigned char stage1_special_lower[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned char stage2_special_lower[] = {
+inline constexpr unsigned char stage2_special_lower[] = {
 /* Block: 0 */
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -18311,7 +18309,7 @@ uaix_const_data unsigned char stage2_special_lower[] = {
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0};
 
-uaix_const_data unsigned short stage3_special_lower[][4] = {
+inline constexpr unsigned short stage3_special_lower[][4] = {
 {0,0,0,0},
 {2,105,775,0}};
 
@@ -18321,4 +18319,3 @@ uaix_const_data unsigned short stage3_special_lower[][4] = {
 
 }
 
-#include <uni/internal/undefs.h>
