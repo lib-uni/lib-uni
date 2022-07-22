@@ -23,15 +23,21 @@ namespace uniex {
 // Proxy iterator for the output iterator (result) look like this:
 
 template<class Iter>
-class proxy_it_out
-{
-private:
+class proxy_it_out {
+  private:
     Iter it;
-public:
+
+  public:
     explicit proxy_it_out(Iter iter) : it(iter) {}
-    decltype(*it) operator*() { return *it; }
-    size_t operator-(const proxy_it_out&) { return 0; } // no-op
-    proxy_it_out& operator++(int) { return *this; } // no-op (by default in C++ output iterators)
+    decltype(*it) operator*() {
+        return *it;
+    }
+    size_t operator-(const proxy_it_out&) {
+        return 0;
+    }  // no-op
+    proxy_it_out& operator++(int) {
+        return *this;
+    }  // no-op (by default in C++ output iterators)
 };
 
 // And in most cases you don't need proxy iterator for input iterators (first, last)
@@ -40,23 +46,27 @@ public:
 // converter functions for lineant conversion, proxy iterator look like this:
 #if 1
 template<class Iter>
-class proxy_it_in
-{
-private:
+class proxy_it_in {
+  private:
     Iter it;
-public:
+
+  public:
     proxy_it_in() = default;
     explicit proxy_it_in(Iter iter) : it(iter) {}
-    decltype(*it) operator*() const { return *it; }
-    bool operator!=(const proxy_it_in& rhs) { return (it != rhs.it); }
-    size_t operator-(const proxy_it_in&) { return 0; } // no-op
-    proxy_it_in& operator++()
-    {
+    decltype(*it) operator*() const {
+        return *it;
+    }
+    bool operator!=(const proxy_it_in& rhs) {
+        return (it != rhs.it);
+    }
+    size_t operator-(const proxy_it_in&) {
+        return 0;
+    }  // no-op
+    proxy_it_in& operator++() {
         ++it;
         return *this;
     }
-    proxy_it_in operator++(int)
-    {
+    proxy_it_in operator++(int) {
         proxy_it_in tmp = *this;
         operator++();
         return tmp;
@@ -98,8 +108,7 @@ public:
 // The functions are designed to work this way.
 
 // Let's use these proxy iterators to write a function that convert a file from UTF-8 to UTF-16
-void example_fstream_and_back_inserter()
-{
+void example_fstream_and_back_inserter() {
     // In this example we will be using test_utf8_broken.txt file from our tests.
 
     std::ifstream stream;
@@ -114,7 +123,8 @@ void example_fstream_and_back_inserter()
 
     std::vector<uint16_t> vec16;
     // Use proxy iterator for output iterator
-    proxy_it_out<std::back_insert_iterator<std::vector<uint16_t>>> it_out(std::back_inserter(vec16));
+    proxy_it_out<std::back_insert_iterator<std::vector<uint16_t>>> it_out(
+        std::back_inserter(vec16));
 
     // Note that this function now always returns 0 because operator-() is no-op
     // but with back_inserter we don't need the result anyway so it's fine.
@@ -125,7 +135,8 @@ void example_fstream_and_back_inserter()
     // Binary write our vector
     std::ofstream stream_out;
     stream_out.open("test_utf8to16_fixed.txt", std::ios::binary);
-    stream_out.write(reinterpret_cast<const char*>(&vec16[0]), vec16.size() * sizeof(uint16_t));
+    stream_out.write(reinterpret_cast<const char*>(&vec16[0]),
+                     vec16.size() * sizeof(uint16_t));
     stream_out.close();
 
     // Now we have a valid UTF-16 file.
@@ -136,37 +147,42 @@ void example_fstream_and_back_inserter()
 // for example for null terminated strings to avoid counting the length, just overload operator!=()
 
 template<class Iter, class Sent>
-class proxy_it_in_sentinel
-{
-private:
+class proxy_it_in_sentinel {
+  private:
     Iter it;
-public:
+
+  public:
     proxy_it_in_sentinel() = default;
     explicit proxy_it_in_sentinel(Iter iter) : it(iter) {}
-    decltype(*it) operator*() const { return *it; }
-    bool operator!=(const Sent& sentinel) { return *it != sentinel; } // sentinel
-    size_t operator-(const proxy_it_in_sentinel&) { return 1; } // no-op but make it return smth to avoid incorrect usage
-    proxy_it_in_sentinel& operator++()
-    {
+    decltype(*it) operator*() const {
+        return *it;
+    }
+    bool operator!=(const Sent& sentinel) {
+        return *it != sentinel;
+    }  // sentinel
+    size_t operator-(const proxy_it_in_sentinel&) {
+        return 1;
+    }  // no-op but make it return smth to avoid incorrect usage
+    proxy_it_in_sentinel& operator++() {
         ++it;
         return *this;
     }
-    proxy_it_in_sentinel operator++(int)
-    {
+    proxy_it_in_sentinel operator++(int) {
         proxy_it_in_sentinel tmp = *this;
         operator++();
         return tmp;
     }
 };
 
-void example_sentinel()
-{
-    const char str8[] = "\xD0\x90\xD0\x91\xD0\x92"; // Random UTF-8 string
+void example_sentinel() {
+    const char str8[] = "\xD0\x90\xD0\x91\xD0\x92";  // Random UTF-8 string
 
-    proxy_it_in_sentinel<decltype(std::cbegin(str8)), char> it_in(std::cbegin(str8));
+    proxy_it_in_sentinel<decltype(std::cbegin(str8)), char> it_in(
+        std::cbegin(str8));
 
     std::u32string str32;
-    proxy_it_out<std::back_insert_iterator<std::u32string>> it_out(std::back_inserter(str32));
+    proxy_it_out<std::back_insert_iterator<std::u32string>> it_out(
+        std::back_inserter(str32));
 
     // And for sentinel we can just use null character
     // Note that with this sentinel proxy iterator we don't need to count the length of str8 anymore
@@ -182,18 +198,23 @@ void example_sentinel()
 
 // Let's make no-op "iterator" to be able to just validate something
 
-class it_out_noop
-{
-public:
-    it_out_noop& operator*() { return *this; } // no-op
-    size_t operator-(const it_out_noop&) { return 0; } // no-op
-    it_out_noop& operator++(int) { return *this; } // no-op
-    void operator=(char32_t) {} // no-op
+class it_out_noop {
+  public:
+    it_out_noop& operator*() {
+        return *this;
+    }  // no-op
+    size_t operator-(const it_out_noop&) {
+        return 0;
+    }  // no-op
+    it_out_noop& operator++(int) {
+        return *this;
+    }  // no-op
+    void operator=(char32_t) {}  // no-op
 };
 
-void example_validate()
-{
-    std::string str8 = "\xD0\x90\xD0\x91\xD0\x92\x80"; // UTF8 string with invalid code unit at the end
+void example_validate() {
+    std::string str8 =
+        "\xD0\x90\xD0\x91\xD0\x92\x80";  // UTF8 string with invalid code unit at the end
 
     it_out_noop out_noop;
     size_t error = 0;
@@ -209,54 +230,62 @@ void example_validate()
 // Count "iterator" to count code points
 // Also it can be used to count the number of code units needed for an output string
 
-class it_out_count
-{
-private:
+class it_out_count {
+  private:
     size_t count = 0;
-public:
-    it_out_count& operator*() { return *this; } // no-op
-    void operator=(char32_t) {} // no-op
-    size_t operator-(const it_out_count& rhs) { return (count - rhs.count); }
-    it_out_count& operator++(int)
-    {
+
+  public:
+    it_out_count& operator*() {
+        return *this;
+    }  // no-op
+    void operator=(char32_t) {}  // no-op
+    size_t operator-(const it_out_count& rhs) {
+        return (count - rhs.count);
+    }
+    it_out_count& operator++(int) {
         count++;
         return *this;
     }
 };
 
-void example_count()
-{
+void example_count() {
     std::string str8 = "\xD0\x90\xD0\x91\xD0\x92";
 
     it_out_count out_count;
-    size_t count = uni::detail::impl_utf8to32(str8.cbegin(), str8.cend(), out_count, nullptr);
+    size_t count = uni::detail::impl_utf8to32(str8.cbegin(), str8.cend(),
+                                              out_count, nullptr);
     std::cout << "Number of code points: " << count << '\n';
 }
 
 // And some useless "iterator" that can print code points and count them in a bit different way
 
-class it_out32_print
-{
-private:
+class it_out32_print {
+  private:
     size_t& count;
-public:
+
+  public:
     it_out32_print(size_t& c) : count(c) {}
-    it_out32_print& operator*() { return *this; } // no-op
-    size_t operator-(const it_out32_print&) { return 0; } // no-op
-    it_out32_print& operator++(int) { return *this; } // no-op
-    void operator=(char32_t codepoint)
-    {
-        std::cout << codepoint << '\n'; // Print code point
-        count++; // And count the number of code points too
+    it_out32_print& operator*() {
+        return *this;
+    }  // no-op
+    size_t operator-(const it_out32_print&) {
+        return 0;
+    }  // no-op
+    it_out32_print& operator++(int) {
+        return *this;
+    }  // no-op
+    void operator=(char32_t codepoint) {
+        std::cout << codepoint << '\n';  // Print code point
+        count++;  // And count the number of code points too
     }
 };
 
-void example_print()
-{
+void example_print() {
     std::string str8 = "\xD0\x90\xD0\x91\xD0\x92";
     size_t count = 0;
     it_out32_print out32_print(count);
-    uni::detail::impl_utf8to32(str8.cbegin(), str8.cend(), out32_print, nullptr);
+    uni::detail::impl_utf8to32(str8.cbegin(), str8.cend(), out32_print,
+                               nullptr);
     std::cout << "Number of code points: " << count << '\n';
 }
 
@@ -268,10 +297,9 @@ void example_print()
 // Maybe something else.
 // Of course it should never be used like this in a user code, only inside a wrapper.
 
-} // namespace uniex
+}  // namespace uniex
 
-int main()
-{
+int main() {
     // Test everything
     uniex::example_fstream_and_back_inserter();
     uniex::example_sentinel();

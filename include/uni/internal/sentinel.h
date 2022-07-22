@@ -10,6 +10,6 @@ namespace uni {
 struct sentinel_t {};
 inline constexpr sentinel_t sentinel;
 
-} // namespace uni
+}  // namespace uni
 
-#endif // CPP_UNI_SENTINEL_UAIX
+#endif  // CPP_UNI_SENTINEL_UAIX

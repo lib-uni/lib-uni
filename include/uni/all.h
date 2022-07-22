@@ -11,19 +11,19 @@
 #include "cpp_uni_iterator.h"
 
 #ifndef UNI_ALGO_IMPL_DISABLE_CASE
-#include "cpp_uni_case.h"
+    #include "cpp_uni_case.h"
 #endif
 
 #ifndef UNI_ALGO_IMPL_DISABLE_NORM
-#include "cpp_uni_norm.h"
+    #include "cpp_uni_norm.h"
 #endif
 
 #ifndef UNI_ALGO_IMPL_DISABLE_BREAK_GRAPHEME
-#include "cpp_uni_break_grapheme.h"
+    #include "cpp_uni_break_grapheme.h"
 #endif
 
 #ifndef UNI_ALGO_IMPL_DISABLE_BREAK_WORD
-#include "cpp_uni_break_word.h"
+    #include "cpp_uni_break_word.h"
 #endif
 
-#endif // CPP_UNI_ALL_H_UAIX
+#endif  // CPP_UNI_ALL_H_UAIX
