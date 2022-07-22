@@ -236,14 +236,14 @@ namespace cases {
                                      std::basic_string_view<UTF8>,
                                      detail::impl_x_utf8_casemap,
                                      detail::impl_utf8_casemap_locale>(
-                    source, detail::impl_casemap_locale_lower_lt);
+                    source, detail::casemap_locale::lower_lt);
             case language::tr:
             case language::az:
                 return detail::t_map<std::basic_string<UTF8>,
                                      std::basic_string_view<UTF8>,
                                      detail::impl_x_utf8_casemap,
                                      detail::impl_utf8_casemap_locale>(
-                    source, detail::impl_casemap_locale_lower_tr_az);
+                    source, detail::casemap_locale::lower_tr_az);
             default:
                 return utf8_lower<UTF8>(source);
         }
@@ -261,14 +261,14 @@ namespace cases {
                                      std::basic_string_view<UTF16>,
                                      detail::impl_x_utf16_casemap,
                                      detail::impl_utf16_casemap_locale>(
-                    source, detail::impl_casemap_locale_lower_lt);
+                    source, detail::casemap_locale::lower_lt);
             case language::tr:
             case language::az:
                 return detail::t_map<std::basic_string<UTF16>,
                                      std::basic_string_view<UTF16>,
                                      detail::impl_x_utf16_casemap,
                                      detail::impl_utf16_casemap_locale>(
-                    source, detail::impl_casemap_locale_lower_tr_az);
+                    source, detail::casemap_locale::lower_tr_az);
             default:
                 return utf16_lower<UTF16>(source);
         }
@@ -284,20 +284,20 @@ namespace cases {
                                      std::basic_string_view<UTF8>,
                                      detail::impl_x_utf8_casemap,
                                      detail::impl_utf8_casemap_locale>(
-                    source, detail::impl_casemap_locale_upper_lt);
+                    source, detail::casemap_locale::upper_lt);
             case language::tr:
             case language::az:
                 return detail::t_map<std::basic_string<UTF8>,
                                      std::basic_string_view<UTF8>,
                                      detail::impl_x_utf8_casemap,
                                      detail::impl_utf8_casemap_locale>(
-                    source, detail::impl_casemap_locale_upper_tr_az);
+                    source, detail::casemap_locale::upper_tr_az);
             case language::el:
                 return detail::t_map<std::basic_string<UTF8>,
                                      std::basic_string_view<UTF8>,
                                      detail::impl_x_utf8_casemap,
                                      detail::impl_utf8_casemap_locale>(
-                    source, detail::impl_casemap_locale_upper_el);
+                    source, detail::casemap_locale::upper_el);
             default:
                 return utf8_upper<UTF8>(source);
         }
@@ -315,20 +315,20 @@ namespace cases {
                                      std::basic_string_view<UTF16>,
                                      detail::impl_x_utf16_casemap,
                                      detail::impl_utf16_casemap_locale>(
-                    source, detail::impl_casemap_locale_upper_lt);
+                    source, detail::casemap_locale::upper_lt);
             case language::tr:
             case language::az:
                 return detail::t_map<std::basic_string<UTF16>,
                                      std::basic_string_view<UTF16>,
                                      detail::impl_x_utf16_casemap,
                                      detail::impl_utf16_casemap_locale>(
-                    source, detail::impl_casemap_locale_upper_tr_az);
+                    source, detail::casemap_locale::upper_tr_az);
             case language::el:
                 return detail::t_map<std::basic_string<UTF16>,
                                      std::basic_string_view<UTF16>,
                                      detail::impl_x_utf16_casemap,
                                      detail::impl_utf16_casemap_locale>(
-                    source, detail::impl_casemap_locale_upper_el);
+                    source, detail::casemap_locale::upper_el);
             default:
                 return utf16_upper<UTF16>(source);
         }
@@ -399,20 +399,20 @@ namespace cases {
                                      std::basic_string_view<UTF8>,
                                      detail::impl_x_utf8_casemap,
                                      detail::impl_utf8_casemap_locale>(
-                    source, detail::impl_casemap_locale_title_lt);
+                    source, detail::casemap_locale::title_lt);
             case language::tr:
             case language::az:
                 return detail::t_map<std::basic_string<UTF8>,
                                      std::basic_string_view<UTF8>,
                                      detail::impl_x_utf8_casemap,
                                      detail::impl_utf8_casemap_locale>(
-                    source, detail::impl_casemap_locale_title_tr_az);
+                    source, detail::casemap_locale::title_tr_az);
             case language::nl:
                 return detail::t_map<std::basic_string<UTF8>,
                                      std::basic_string_view<UTF8>,
                                      detail::impl_x_utf8_casemap,
                                      detail::impl_utf8_casemap_locale>(
-                    source, detail::impl_casemap_locale_title_nl);
+                    source, detail::casemap_locale::title_nl);
             default:
                 return utf8_title<UTF8>(source);
         }
@@ -428,20 +428,20 @@ namespace cases {
                                      std::basic_string_view<UTF16>,
                                      detail::impl_x_utf16_casemap,
                                      detail::impl_utf16_casemap_locale>(
-                    source, detail::impl_casemap_locale_title_lt);
+                    source, detail::casemap_locale::title_lt);
             case language::tr:
             case language::az:
                 return detail::t_map<std::basic_string<UTF16>,
                                      std::basic_string_view<UTF16>,
                                      detail::impl_x_utf16_casemap,
                                      detail::impl_utf16_casemap_locale>(
-                    source, detail::impl_casemap_locale_title_tr_az);
+                    source, detail::casemap_locale::title_tr_az);
             case language::nl:
                 return detail::t_map<std::basic_string<UTF16>,
                                      std::basic_string_view<UTF16>,
                                      detail::impl_x_utf16_casemap,
                                      detail::impl_utf16_casemap_locale>(
-                    source, detail::impl_casemap_locale_title_nl);
+                    source, detail::casemap_locale::title_nl);
             default:
                 return utf16_title<UTF16>(source);
         }

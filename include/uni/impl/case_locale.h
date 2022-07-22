@@ -17,15 +17,18 @@
 
 namespace uni::detail {
 
-//inline constexpr int impl_casemap_locale_null      = 0;
-inline constexpr int impl_casemap_locale_lower_lt = 10;
-inline constexpr int impl_casemap_locale_lower_tr_az = 11;
-inline constexpr int impl_casemap_locale_upper_lt = 12;
-inline constexpr int impl_casemap_locale_upper_tr_az = 13;
-inline constexpr int impl_casemap_locale_upper_el = 14;
-inline constexpr int impl_casemap_locale_title_lt = 15;
-inline constexpr int impl_casemap_locale_title_tr_az = 16;
-inline constexpr int impl_casemap_locale_title_nl = 17;
+namespace casemap_locale {
+    enum {
+        lower_lt = 10,
+        lower_tr_az = 11,
+        upper_lt = 12,
+        upper_tr_az = 13,
+        upper_el = 14,
+        title_lt = 15,
+        title_tr_az = 16,
+        title_nl = 17,
+    };
+}
 
 template<typename it_in_utf8>
 bool utf8_after_soft_dotted(it_in_utf8 first, it_in_utf8 src) {
@@ -1206,13 +1209,13 @@ size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
 
                 // LOCALE BEGIN
 
-                if (locale == impl_casemap_locale_title_tr_az) {
+                if (locale == casemap_locale::title_tr_az) {
                     if (c == 0x0069) {
                         *dst++ = (type_char8)(type_codept)0xC4;
                         *dst++ = (type_char8)(type_codept)0xB0;
                         continue;
                     }
-                } else if (locale == impl_casemap_locale_title_nl) {
+                } else if (locale == casemap_locale::title_nl) {
                     // i or I with j or J
                     if ((c == 0x0069 || c == 0x0049) && src != last
                         && ((type_codept)*src == 0x006A
@@ -1224,7 +1227,7 @@ size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
                     }
                 }
                 // This path is not possible for lt
-                /*else if (locale == impl_casemap_locale_title_lt)
+                /*else if (locale == casemap_locale::title_lt)
                 {
                     if (c == 0x0307 && utf16_after_soft_dotted(first, prev))
                         continue;
@@ -1248,11 +1251,11 @@ size_t utf8_title_locale(it_in_utf8 first, it_end_utf8 last, it_out_utf8 result,
         } else {
             // LOCALE BEGIN
 
-            if (locale == impl_casemap_locale_title_lt) {
+            if (locale == casemap_locale::title_lt) {
                 dst = utf8_locale_lower_lt(c, dst, src, last, first, prev);
                 continue;
             }
-            if (locale == impl_casemap_locale_title_tr_az) {
+            if (locale == casemap_locale::title_tr_az) {
                 dst = utf8_locale_lower_tr_az(c, dst, src, last, first, prev);
                 continue;
             }
@@ -1334,12 +1337,12 @@ size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
 
                 // LOCALE BEGIN
 
-                if (locale == impl_casemap_locale_title_tr_az) {
+                if (locale == casemap_locale::title_tr_az) {
                     if (c == 0x0069) {
                         *dst++ = (type_char16)0x0130;
                         continue;
                     }
-                } else if (locale == impl_casemap_locale_title_nl) {
+                } else if (locale == casemap_locale::title_nl) {
                     // i or I with j or J
                     if ((c == 0x0069 || c == 0x0049) && src != last
                         && ((type_codept)*src == 0x006A
@@ -1351,7 +1354,7 @@ size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
                     }
                 }
                 // This path is not possible for lt
-                /*else if (locale == impl_casemap_locale_title_lt)
+                /*else if (locale == casemap_locale::title_lt)
                 {
                     if (c == 0x0307 && utf16_after_soft_dotted(first, prev))
                         continue;
@@ -1375,11 +1378,11 @@ size_t utf16_title_locale(it_in_utf16 first, it_end_utf16 last,
         } else {
             // LOCALE BEGIN
 
-            if (locale == impl_casemap_locale_title_lt) {
+            if (locale == casemap_locale::title_lt) {
                 dst = utf16_locale_lower_lt(c, dst, src, last, first, prev);
                 continue;
             }
-            if (locale == impl_casemap_locale_title_tr_az) {
+            if (locale == casemap_locale::title_tr_az) {
                 dst = utf16_locale_lower_tr_az(c, dst, src, last, first, prev);
                 continue;
             }
@@ -1421,7 +1424,7 @@ size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
     it_out_utf8 dst = result;
     type_codept c = 0;
 
-    if (locale == impl_casemap_locale_upper_lt) {
+    if (locale == casemap_locale::upper_lt) {
         while (src != last) {
             it_in_utf8 prev = src;
 
@@ -1429,7 +1432,7 @@ size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
 
             dst = utf8_locale_upper_lt(c, dst, first, prev);
         }
-    } else if (locale == impl_casemap_locale_lower_lt) {
+    } else if (locale == casemap_locale::lower_lt) {
         while (src != last) {
             it_in_utf8 prev = src;
 
@@ -1437,13 +1440,13 @@ size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
 
             dst = utf8_locale_lower_lt(c, dst, src, last, first, prev);
         }
-    } else if (locale == impl_casemap_locale_upper_tr_az) {
+    } else if (locale == casemap_locale::upper_tr_az) {
         while (src != last) {
             src = utf8_iter(src, last, &c, iter_replacement);
 
             dst = utf8_locale_upper_tr_az(c, dst);
         }
-    } else if (locale == impl_casemap_locale_lower_tr_az) {
+    } else if (locale == casemap_locale::lower_tr_az) {
         while (src != last) {
             it_in_utf8 prev = src;
 
@@ -1451,16 +1454,16 @@ size_t impl_utf8_casemap_locale(it_in_utf8 first, it_end_utf8 last,
 
             dst = utf8_locale_lower_tr_az(c, dst, src, last, first, prev);
         }
-    } else if (locale == impl_casemap_locale_upper_el)
+    } else if (locale == casemap_locale::upper_el)
         return utf8_upper_el(first, last, result);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-    else if (locale == impl_casemap_locale_title_lt)
+    else if (locale == casemap_locale::title_lt)
         return utf8_title_locale(first, last, result,
                                  locale);  // NOLINT(bugprone-branch-clone)
-    else if (locale == impl_casemap_locale_title_tr_az)
+    else if (locale == casemap_locale::title_tr_az)
         return utf8_title_locale(first, last, result,
                                  locale);  // NOLINT(bugprone-branch-clone)
-    else if (locale == impl_casemap_locale_title_nl)
+    else if (locale == casemap_locale::title_nl)
         return utf8_title_locale(first, last, result,
                                  locale);  // NOLINT(bugprone-branch-clone)
 #endif
@@ -1477,7 +1480,7 @@ size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last,
     it_out_utf16 dst = result;
     type_codept c = 0;
 
-    if (locale == impl_casemap_locale_upper_lt) {
+    if (locale == casemap_locale::upper_lt) {
         while (src != last) {
             it_in_utf16 prev = src;
 
@@ -1485,7 +1488,7 @@ size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last,
 
             dst = utf16_locale_upper_lt(c, dst, first, prev);
         }
-    } else if (locale == impl_casemap_locale_lower_lt) {
+    } else if (locale == casemap_locale::lower_lt) {
         while (src != last) {
             it_in_utf16 prev = src;
 
@@ -1493,13 +1496,13 @@ size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last,
 
             dst = utf16_locale_lower_lt(c, dst, src, last, first, prev);
         }
-    } else if (locale == impl_casemap_locale_upper_tr_az) {
+    } else if (locale == casemap_locale::upper_tr_az) {
         while (src != last) {
             src = utf16_iter(src, last, &c, iter_replacement);
 
             dst = utf16_locale_upper_tr_az(c, dst);
         }
-    } else if (locale == impl_casemap_locale_lower_tr_az) {
+    } else if (locale == casemap_locale::lower_tr_az) {
         while (src != last) {
             it_in_utf16 prev = src;
 
@@ -1507,16 +1510,16 @@ size_t impl_utf16_casemap_locale(it_in_utf16 first, it_end_utf16 last,
 
             dst = utf16_locale_lower_tr_az(c, dst, src, last, first, prev);
         }
-    } else if (locale == impl_casemap_locale_upper_el)
+    } else if (locale == casemap_locale::upper_el)
         return utf16_upper_el(first, last, result);
 #ifndef UNI_ALGO_DISABLE_BREAK_WORD
-    else if (locale == impl_casemap_locale_title_lt)
+    else if (locale == casemap_locale::title_lt)
         return utf16_title_locale(first, last, result,
                                   locale);  // NOLINT(bugprone-branch-clone)
-    else if (locale == impl_casemap_locale_title_tr_az)
+    else if (locale == casemap_locale::title_tr_az)
         return utf16_title_locale(first, last, result,
                                   locale);  // NOLINT(bugprone-branch-clone)
-    else if (locale == impl_casemap_locale_title_nl)
+    else if (locale == casemap_locale::title_nl)
         return utf16_title_locale(first, last, result,
                                   locale);  // NOLINT(bugprone-branch-clone)
 #endif
